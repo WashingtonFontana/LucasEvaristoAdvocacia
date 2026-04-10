@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin — Lucas Evaristo Advocacia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #061d4f;
+  --navy2:   #0a2560;
+  --gold:    #c5a059;
+  --gold2:   #d4b06a;
+  --blue:    #4a90e2;
+  --dark:    #0c0f0d;
+  --mid:     #1a1f1d;
+  --panel:   #111614;
+  --surface: #181e1b;
+  --border:  rgba(197,160,89,.18);
+  --text:    #e8e3d8;
+  --muted:   #8a8a7a;
+  --danger:  #c0392b;
+  --success: #27ae60;
+  --radius:  6px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--dark);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+}
+
+/* ── Sidebar ─────────────────────────────────────── */
+.sidebar{
+  width:260px;
+  min-height:100vh;
+  background:linear-gradient(180deg,var(--navy) 0%,var(--dark) 100%);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  top:0;left:0;
+  z-index:100;
+}
+
+.sidebar-brand{
+  padding:32px 24px 24px;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-brand .brand-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;
+  font-weight:600;
+  color:#fff;
+  line-height:1.2;
+}
+.sidebar-brand .brand-sub{
+  font-size:11px;
+  color:var(--gold);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-top:4px;
+}
+
+.sidebar-nav{
+  flex:1;
+  padding:20px 0;
+}
+.nav-section-label{
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:16px 24px 8px;
+}
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 24px;
+  cursor:pointer;
+  font-size:14px;
+  color:rgba(232,227,216,.65);
+  transition:.2s;
+  border-left:3px solid transparent;
+  user-select:none;
+}
+.nav-item:hover{color:var(--text);background:rgba(197,160,89,.06);}
+.nav-item.active{
+  color:var(--gold);
+  border-left-color:var(--gold);
+  background:rgba(197,160,89,.1);
+}
+.nav-icon{font-size:18px;width:20px;text-align:center;}
+
+.sidebar-footer{
+  padding:20px 24px;
+  border-top:1px solid var(--border);
+  font-size:12px;
+  color:var(--muted);
+}
+.api-badge{
+  display:inline-block;
+  background:rgba(74,144,226,.15);
+  border:1px solid rgba(74,144,226,.3);
+  color:var(--blue);
+  font-size:10px;
+  letter-spacing:1px;
+  padding:3px 8px;
+  border-radius:20px;
+  margin-top:6px;
+}
+
+/* ── Main ────────────────────────────────────────── */
+.main{
+  margin-left:260px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.topbar{
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  padding:0 36px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.topbar-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;
+  font-weight:500;
+}
+.topbar-actions{display:flex;gap:10px;align-items:center;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 18px;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;
+  font-weight:500;
+  border:none;
+  border-radius:var(--radius);
+  cursor:pointer;
+  transition:.2s;
+  text-decoration:none;
+  letter-spacing:.3px;
+}
+.btn-gold{background:var(--gold);color:#0c0f0d;}
+.btn-gold:hover{background:var(--gold2);}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-danger:hover{opacity:.85;}
+.btn-success{background:var(--success);color:#fff;}
+.btn-sm{padding:6px 12px;font-size:12px;}
+
+/* ── Content ─────────────────────────────────────── */
+.content{padding:36px;flex:1;}
+.section{display:none;}
+.section.active{display:block;}
+
+.page-header{margin-bottom:28px;}
+.page-header h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:500;
+  color:#fff;
+}
+.page-header p{font-size:13px;color:var(--muted);margin-top:4px;}
+
+/* ── Cards/Panels ────────────────────────────────── */
+.panel{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  margin-bottom:20px;
+  overflow:hidden;
+}
+.panel-header{
+  padding:16px 22px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.panel-header h3{font-size:14px;font-weight:500;color:var(--gold);}
+.panel-body{padding:22px;}
+
+/* ── Form ────────────────────────────────────────── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-grid.single{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:12px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+.form-group input,
+.form-group textarea,
+.form-group select{
+  background:var(--panel);
+  border:1px solid rgba(197,160,89,.2);
+  border-radius:var(--radius);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;
+  padding:10px 14px;
+  transition:border-color .2s;
+  width:100%;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+  outline:none;
+  border-color:var(--gold);
+}
+.form-group textarea{resize:vertical;min-height:90px;}
+.form-actions{margin-top:20px;display:flex;gap:10px;justify-content:flex-end;}
+
+/* ── Cards de especialidades ─────────────────────── */
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.card-editor{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+}
+.card-editor-title{
+  font-size:12px;color:var(--gold);
+  letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+
+/* ── Upload de imagens ───────────────────────────── */
+.upload-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.upload-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px;
+  text-align:center;
+}
+.upload-preview{
+  width:100%;
+  height:140px;
+  border:2px dashed var(--border);
+  border-radius:var(--radius);
+  margin-bottom:14px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  position:relative;
+  background:var(--surface);
+}
+.upload-preview img{
+  max-width:100%;max-height:100%;object-fit:contain;
+}
+.upload-preview .no-img{color:var(--muted);font-size:28px;}
+.upload-card h4{font-size:13px;margin-bottom:4px;}
+.upload-card p{font-size:11px;color:var(--muted);margin-bottom:14px;}
+.file-input-wrap{position:relative;overflow:hidden;display:inline-block;}
+.file-input-wrap input[type=file]{
+  position:absolute;top:0;left:0;opacity:0;width:100%;height:100%;cursor:pointer;
+}
+
+/* ── Toast ───────────────────────────────────────── */
+#toast-container{
+  position:fixed;bottom:24px;right:24px;
+  display:flex;flex-direction:column;gap:8px;
+  z-index:9999;
+}
+.toast{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:12px 18px;
+  font-size:13px;
+  display:flex;align-items:center;gap:10px;
+  animation:slideIn .3s ease;
+  min-width:260px;
+}
+.toast.success{border-left:3px solid var(--success);}
+.toast.error{border-left:3px solid var(--danger);}
+@keyframes slideIn{from{transform:translateX(60px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── Dashboard stats ─────────────────────────────── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.stat-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--gold);margin-top:6px;}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* ── Auth overlay ────────────────────────────────── */
+#auth-overlay{
+  position:fixed;inset:0;
+  background:rgba(6,10,8,.97);
+  z-index:9000;
+  display:flex;align-items:center;justify-content:center;
+}
+.auth-box{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:44px 48px;
+  width:380px;
+  text-align:center;
+}
+.auth-box h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;color:#fff;margin-bottom:4px;
+}
+.auth-box p{font-size:12px;color:var(--muted);margin-bottom:28px;}
+.auth-box .form-group{text-align:left;margin-bottom:14px;}
+.auth-box .btn-gold{width:100%;justify-content:center;padding:12px;margin-top:6px;}
+.auth-gold-line{
+  width:40px;height:2px;background:var(--gold);margin:.6rem auto 1.4rem;
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media(max-width:900px){
+  .sidebar{width:200px;}
+  .main{margin-left:200px;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .upload-grid{grid-template-columns:1fr;}
+  .cards-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+}
+@media(max-width:640px){
+  .sidebar{display:none;}
+  .main{margin-left:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ Auth Overlay ═══════════════════════════════════════════ -->
+<div id="auth-overlay">
+  <div class="auth-box">
+    <h1>Lucas Evaristo</h1>
+    <div class="auth-gold-line"></div>
+    <p>PAINEL ADMINISTRATIVO</p>
+    <div class="form-group">
+      <label>Usuário</label>
+      <input type="text" id="auth-user" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Senha</label>
+      <input type="password" id="auth-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn btn-gold" onclick="fazerLogin()">Entrar no Painel</button>
+    <p id="auth-error" style="color:var(--danger);font-size:12px;margin-top:12px;display:none;">Credenciais inválidas.</p>
+  </div>
+</div>
+
+<!-- ═══ Sidebar ═════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-title">Lucas Evaristo</div>
+    <div class="brand-sub">Painel Admin</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Visão Geral</div>
+    <div class="nav-item active" onclick="showSection('dashboard')">
+      <span class="nav-icon">◈</span> Dashboard
+    </div>
+    <div class="nav-section-label">Conteúdo</div>
+    <div class="nav-item" onclick="showSection('hero')">
+      <span class="nav-icon">⊞</span> Seção Principal
+    </div>
+    <div class="nav-item" onclick="showSection('especialidades')">
+      <span class="nav-icon">⚖</span> Especialidades
+    </div>
+    <div class="nav-item" onclick="showSection('perfil')">
+      <span class="nav-icon">◉</span> Perfil do Advogado
+    </div>
+    <div class="nav-item" onclick="showSection('contato')">
+      <span class="nav-icon">✉</span> Contato & WhatsApp
+    </div>
+    <div class="nav-item" onclick="showSection('footer')">
+      <span class="nav-icon">▤</span> Rodapé
+    </div>
+    <div class="nav-section-label">Mídia</div>
+    <div class="nav-item" onclick="showSection('imagens')">
+      <span class="nav-icon">⊡</span> Imagens
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div>FastAPI Backend</div>
+    <div class="api-badge">REST API v1</div>
+  </div>
+</aside>
+
+<!-- ═══ Main ═════════════════════════════════════════════════════ -->
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-actions">
+      <a href="/" target="_blank" class="btn btn-outline btn-sm">↗ Ver Site</a>
+      <button class="btn btn-danger btn-sm" onclick="resetConteudo()">↺ Restaurar Padrão</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ── Dashboard ── -->
+    <div id="sec-dashboard" class="section active">
+      <div class="page-header">
+        <h2>Visão Geral</h2>
+        <p>Gerencie todo o conteúdo do site de um único lugar.</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Seções de Texto</div>
+          <div class="stat-value">5</div>
+          <div class="stat-sub">Hero, Cards, Perfil, Contato, Footer</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Especialidades</div>
+          <div class="stat-value">5</div>
+          <div class="stat-sub">Áreas de atuação editáveis</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Imagens Gerenciadas</div>
+          <div class="stat-value">3</div>
+          <div class="stat-sub">Logo, Perfil, Background</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">API Endpoints</div>
+          <div class="stat-value">12</div>
+          <div class="stat-sub">GET, PUT, POST disponíveis</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>Guia Rápido</h3></div>
+        <div class="panel-body">
+          <p style="font-size:14px;color:var(--muted);line-height:1.8;">
+            Use o menu lateral para navegar entre as seções. Cada seção permite editar os textos correspondentes do site.
+            As alterações são salvas em <code style="background:var(--panel);padding:2px 6px;border-radius:3px;font-size:12px;">content.json</code>
+            e aplicadas em tempo real. Para trocar as imagens, acesse <strong style="color:var(--gold)">Imagens</strong> no menu.
+          </p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>Endpoints da API</h3></div>
+        <div class="panel-body" id="api-docs-list" style="font-size:13px;color:var(--muted);line-height:2;">
+          <code>GET  /api/conteudo/publico</code> — Conteúdo público (sem auth)<br>
+          <code>GET  /api/conteudo</code> — Todo o conteúdo<br>
+          <code>PUT  /api/conteudo/hero</code> — Editar Hero<br>
+          <code>PUT  /api/conteudo/especialidades</code> — Editar Especialidades<br>
+          <code>PUT  /api/conteudo/perfil</code> — Editar Perfil<br>
+          <code>PUT  /api/conteudo/contato</code> — Editar Contato<br>
+          <code>PUT  /api/conteudo/footer</code> — Editar Rodapé<br>
+          <code>POST /api/imagens/logo</code> — Upload Logo<br>
+          <code>POST /api/imagens/perfil</code> — Upload Foto Perfil<br>
+          <code>POST /api/imagens/background</code> — Upload Background<br>
+          <code>POST /api/conteudo/reset</code> — Restaurar padrão<br>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Hero ── -->
+    <div id="sec-hero" class="section">
+      <div class="page-header">
+        <h2>Seção Principal (Hero)</h2>
+        <p>Textos exibidos no banner de entrada do site.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>Editar Textos</h3></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Texto de Boas-vindas</label>
+              <input type="text" id="hero-welcome_text">
+            </div>
+            <div class="form-group">
+              <label>Botão CTA</label>
+              <input type="text" id="hero-btn_texto">
+            </div>
+            <div class="form-group">
+              <label>Título — Linha 1</label>
+              <input type="text" id="hero-titulo_linha1">
+            </div>
+            <div class="form-group">
+              <label>Título — Linha 2</label>
+              <input type="text" id="hero-titulo_linha2">
+            </div>
+          </div>
+          <div class="form-grid single" style="margin-top:14px;">
+            <div class="form-group">
+              <label>Subtítulo / Descrição</label>
+              <textarea id="hero-subtitulo"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-gold" onclick="salvarHero()">Salvar Alterações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Especialidades ── -->
+    <div id="sec-especialidades" class="section">
+      <div class="page-header">
+        <h2>Especialidades</h2>
+        <p>Título da seção e os cinco cards de áreas de atuação.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>Cabeçalho da Seção</h3></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Subtítulo (acima)</label>
+              <input type="text" id="esp-subtitulo">
+            </div>
+            <div class="form-group">
+              <label>Título Principal</label>
+              <input type="text" id="esp-titulo">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-gold" onclick="salvarEspecialidades()">Salvar Seção</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>Cards de Especialidades</h3></div>
+        <div class="panel-body">
+          <div class="cards-grid" id="cards-grid"></div>
+          <div class="form-actions">
+            <button class="btn btn-gold" onclick="salvarCards()">Salvar Cards</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Perfil ── -->
+    <div id="sec-perfil" class="section">
+      <div class="page-header">
+        <h2>Perfil do Advogado</h2>
+        <p>Informações exibidas na seção "Nosso Corpo Jurídico".</p>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>Dados do Advogado</h3></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Título da Seção</label>
+              <input type="text" id="perfil-titulo_secao">
+            </div>
+            <div class="form-group">
+              <label>Nome do Advogado</label>
+              <input type="text" id="perfil-nome">
+            </div>
+            <div class="form-group">
+              <label>Cargo / Especialidade</label>
+              <input type="text" id="perfil-cargo">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-gold" onclick="salvarPerfil()">Salvar Alterações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Contato ── -->
+    <div id="sec-contato" class="section">
+      <div class="page-header">
+        <h2>Contato & WhatsApp</h2>
+        <p>Textos do formulário e número de destino do WhatsApp.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>Formulário de Contato</h3></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Título da Seção</label>
+              <input type="text" id="contato-titulo">
+            </div>
+            <div class="form-group">
+              <label>Número WhatsApp (com código do país)</label>
+              <input type="text" id="contato-whatsapp_numero" placeholder="5532988134080">
+            </div>
+            <div class="form-group">
+              <label>Placeholder — Nome</label>
+              <input type="text" id="contato-placeholder_nome">
+            </div>
+            <div class="form-group">
+              <label>Placeholder — Telefone</label>
+              <input type="text" id="contato-placeholder_telefone">
+            </div>
+            <div class="form-group">
+              <label>Placeholder — Mensagem</label>
+              <input type="text" id="contato-placeholder_mensagem">
+            </div>
+            <div class="form-group">
+              <label>Texto do Botão</label>
+              <input type="text" id="contato-btn_texto">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-gold" onclick="salvarContato()">Salvar Alterações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <div id="sec-footer" class="section">
+      <div class="page-header">
+        <h2>Rodapé</h2>
+        <p>Horários de funcionamento e endereço exibidos no rodapé.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>Informações do Rodapé</h3></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Título — Links</label>
+              <input type="text" id="footer-links_titulo">
+            </div>
+            <div class="form-group">
+              <label>Título — Horários</label>
+              <input type="text" id="footer-horarios_titulo">
+            </div>
+            <div class="form-group">
+              <label>Horário Semana</label>
+              <input type="text" id="footer-horario_semana">
+            </div>
+            <div class="form-group">
+              <label>Horário Fim de Semana</label>
+              <input type="text" id="footer-horario_fim">
+            </div>
+          </div>
+          <div class="form-grid single" style="margin-top:14px;">
+            <div class="form-group">
+              <label>Endereço Completo</label>
+              <textarea id="footer-endereco"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-gold" onclick="salvarFooter()">Salvar Alterações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Imagens ── -->
+    <div id="sec-imagens" class="section">
+      <div class="page-header">
+        <h2>Gerenciamento de Imagens</h2>
+        <p>Faça upload de novas imagens. Formatos aceitos: JPG, PNG, WEBP. Máximo 5 MB.</p>
+      </div>
+      <div class="upload-grid">
+
+        <div class="upload-card">
+          <div class="upload-preview" id="prev-logo">
+            <span class="no-img">🖼</span>
+          </div>
+          <h4>Logo / Slogan</h4>
+          <p>Exibida no cabeçalho e rodapé do site.</p>
+          <div class="file-input-wrap">
+            <button class="btn btn-outline btn-sm">Escolher arquivo</button>
+            <input type="file" accept="image/*" onchange="uploadImagem('logo', this)">
+          </div>
+        </div>
+
+        <div class="upload-card">
+          <div class="upload-preview" id="prev-perfil">
+            <span class="no-img">👤</span>
+          </div>
+          <h4>Foto de Perfil</h4>
+          <p>Foto do advogado na seção "Nosso Corpo Jurídico".</p>
+          <div class="file-input-wrap">
+            <button class="btn btn-outline btn-sm">Escolher arquivo</button>
+            <input type="file" accept="image/*" onchange="uploadImagem('perfil', this)">
+          </div>
+        </div>
+
+        <div class="upload-card">
+          <div class="upload-preview" id="prev-background">
+            <span class="no-img">🌆</span>
+          </div>
+          <h4>Imagem de Fundo (Hero)</h4>
+          <p>Background do banner principal do site.</p>
+          <div class="file-input-wrap">
+            <button class="btn btn-outline btn-sm">Escolher arquivo</button>
+            <input type="file" accept="image/*" onchange="uploadImagem('background', this)">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<div id="toast-container"></div>
+
+<script>
+// ─── Estado ──────────────────────────────────────────────────────
+const API = '';   // mesmo domínio; altere se hospedar separado
+let AUTH = '';    // header Authorization: Basic <base64>
+let conteudo = {};
+
+// ─── Autenticação ─────────────────────────────────────────────────
+async function fazerLogin(){
+  const u = document.getElementById('auth-user').value;
+  const p = document.getElementById('auth-pass').value;
+  AUTH = 'Basic ' + btoa(u + ':' + p);
+
+  try {
+    const r = await apiFetch('/api/conteudo');
+    if (!r.ok) throw new Error();
+    document.getElementById('auth-overlay').style.display = 'none';
+    conteudo = await r.json();
+    preencherFormularios();
+    carregarImagens();
+  } catch {
+    document.getElementById('auth-error').style.display = 'block';
+    AUTH = '';
+  }
+}
+
+document.getElementById('auth-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fazerLogin();
+});
+
+// ─── Fetch helper ─────────────────────────────────────────────────
+function apiFetch(url, opts = {}) {
+  return fetch(API + url, {
+    ...opts,
+    headers: { 'Authorization': AUTH, ...(opts.headers || {}) }
+  });
+}
+
+// ─── Navegação ────────────────────────────────────────────────────
+const TITLES = {
+  dashboard: 'Dashboard', hero: 'Seção Principal (Hero)',
+  especialidades: 'Especialidades', perfil: 'Perfil do Advogado',
+  contato: 'Contato & WhatsApp', footer: 'Rodapé', imagens: 'Imagens'
+};
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.getElementById('topbar-title').textContent = TITLES[id] || id;
+}
+
+// ─── Preencher formulários ────────────────────────────────────────
+function preencherFormularios() {
+  // Hero
+  Object.entries(conteudo.hero || {}).forEach(([k,v]) => {
+    const el = document.getElementById('hero-' + k);
+    if (el) el.value = v;
+  });
+  // Especialidades cabeçalho
+  if (conteudo.especialidades) {
+    document.getElementById('esp-subtitulo').value = conteudo.especialidades.subtitulo || '';
+    document.getElementById('esp-titulo').value    = conteudo.especialidades.titulo    || '';
+    renderCards(conteudo.especialidades.cards || []);
+  }
+  // Perfil
+  Object.entries(conteudo.perfil || {}).forEach(([k,v]) => {
+    const el = document.getElementById('perfil-' + k);
+    if (el) el.value = v;
+  });
+  // Contato
+  const cm = { ...conteudo.contato };
+  if (cm.whatsapp_numero !== undefined) {
+    document.getElementById('contato-whatsapp_numero').value = cm.whatsapp_numero;
+    delete cm.whatsapp_numero;
+  }
+  Object.entries(cm).forEach(([k,v]) => {
+    const el = document.getElementById('contato-' + k);
+    if (el) el.value = v;
+  });
+  // Garante o campo de whatsapp do JSON
+  const wEl = document.getElementById('contato-whatsapp_numero');
+  if (wEl && conteudo.contato?.whatsapp_numero) wEl.value = conteudo.contato.whatsapp_numero;
+
+  // Footer
+  Object.entries(conteudo.footer || {}).forEach(([k,v]) => {
+    const el = document.getElementById('footer-' + k);
+    if (el) el.value = v;
+  });
+}
+
+function renderCards(cards) {
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = cards.map((c, i) => `
+    <div class="card-editor">
+      <div class="card-editor-title"><span>${c.icone}</span> Card ${i+1}</div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label>Ícone (emoji)</label>
+        <input type="text" id="card-${i}-icone" value="${c.icone}">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label>Título</label>
+        <input type="text" id="card-${i}-titulo" value="${c.titulo}">
+      </div>
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea id="card-${i}-descricao">${c.descricao}</textarea>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── Salvar seções ────────────────────────────────────────────────
+async function salvarHero() {
+  const body = {};
+  ['welcome_text','titulo_linha1','titulo_linha2','subtitulo','btn_texto'].forEach(k => {
+    body[k] = document.getElementById('hero-' + k).value;
+  });
+  await salvarSecao('/api/conteudo/hero', body);
+}
+
+async function salvarEspecialidades() {
+  const body = {
+    subtitulo: document.getElementById('esp-subtitulo').value,
+    titulo:    document.getElementById('esp-titulo').value,
+  };
+  await salvarSecao('/api/conteudo/especialidades', body);
+}
+
+async function salvarCards() {
+  const cards = (conteudo.especialidades?.cards || []).map((_, i) => ({
+    icone:    document.getElementById(`card-${i}-icone`)?.value    || '',
+    titulo:   document.getElementById(`card-${i}-titulo`)?.value   || '',
+    descricao:document.getElementById(`card-${i}-descricao`)?.value|| '',
+  }));
+  await salvarSecao('/api/conteudo/especialidades', { cards });
+}
+
+async function salvarPerfil() {
+  const body = {};
+  ['titulo_secao','nome','cargo'].forEach(k => {
+    body[k] = document.getElementById('perfil-' + k).value;
+  });
+  await salvarSecao('/api/conteudo/perfil', body);
+}
+
+async function salvarContato() {
+  const body = {};
+  ['titulo','placeholder_nome','placeholder_telefone','placeholder_mensagem','btn_texto','whatsapp_numero'].forEach(k => {
+    body[k] = document.getElementById('contato-' + k).value;
+  });
+  await salvarSecao('/api/conteudo/contato', body);
+}
+
+async function salvarFooter() {
+  const body = {};
+  ['links_titulo','horarios_titulo','horario_semana','horario_fim','endereco'].forEach(k => {
+    body[k] = document.getElementById('footer-' + k).value;
+  });
+  await salvarSecao('/api/conteudo/footer', body);
+}
+
+async function salvarSecao(url, body) {
+  try {
+    const r = await apiFetch(url, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.detail || 'Erro');
+    toast('Salvo com sucesso! ✓', 'success');
+    const r2 = await apiFetch('/api/conteudo');
+    conteudo = await r2.json();
+  } catch(e) {
+    toast('Erro ao salvar: ' + e.message, 'error');
+  }
+}
+
+// ─── Upload de imagens ────────────────────────────────────────────
+async function uploadImagem(tipo, input) {
+  if (!input.files[0]) return;
+  const fd = new FormData();
+  fd.append('file', input.files[0]);
+  try {
+    const r = await apiFetch(`/api/imagens/${tipo}`, { method: 'POST', body: fd });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.detail);
+    toast(data.mensagem + ' ✓', 'success');
+    // Atualiza preview
+    const prev = document.getElementById('prev-' + tipo);
+    const url = data.url + '?t=' + Date.now();
+    prev.innerHTML = `<img src="${url}" alt="${tipo}">`;
+  } catch(e) {
+    toast('Erro no upload: ' + e.message, 'error');
+  }
+}
+
+async function carregarImagens() {
+  try {
+    const r = await apiFetch('/api/imagens');
+    const data = await r.json();
+    Object.entries(data).forEach(([nome, url]) => {
+      if (!url) return;
+      const idMap = { slogan: 'logo', 'foto-perfil': 'perfil', background: 'background' };
+      const prevId = 'prev-' + (idMap[nome] || nome);
+      const el = document.getElementById(prevId);
+      if (el) el.innerHTML = `<img src="${url}?t=${Date.now()}" alt="${nome}">`;
+    });
+  } catch {}
+}
+
+// ─── Reset ────────────────────────────────────────────────────────
+async function resetConteudo() {
+  if (!confirm('Restaurar todos os textos ao conteúdo padrão? Imagens não serão afetadas.')) return;
+  try {
+    const r = await apiFetch('/api/conteudo/reset', { method: 'POST' });
+    if (!r.ok) throw new Error();
+    toast('Conteúdo restaurado ao padrão ✓', 'success');
+    const r2 = await apiFetch('/api/conteudo');
+    conteudo = await r2.json();
+    preencherFormularios();
+  } catch {
+    toast('Erro ao restaurar', 'error');
+  }
+}
+
+// ─── Toast ────────────────────────────────────────────────────────
+function toast(msg, tipo = 'success') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast ' + tipo;
+  t.innerHTML = `<span>${tipo === 'success' ? '✓' : '✗'}</span> ${msg}`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,561 @@
+/* ============================================================
+   CONFIGURAÇÕES GERAIS E RESET
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    scroll-behavior: smooth;
+}
+
+/* ============================================================
+   HEADER E NAVEGAÇÃO
+   ============================================================ */
+header {
+    background: #061d4f;
+    background: linear-gradient(90deg, rgba(6, 29, 79, 1) 0%, rgb(12, 15, 13) 50%, rgb(32, 32, 30) 100%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 0;
+    z-index: 1000;
+}
+
+.container-nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+.slogan-img {
+    height: 80px;
+    width: auto;
+    display: block;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+nav ul li {
+    margin-left: 25px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    position: relative;
+    padding-bottom: 5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+/* Efeito de linha animada abaixo dos links do menu */
+nav ul li a::after,
+.footer-links ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4a90e2;
+    transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after,
+.footer-links ul li a:hover::after {
+    width: 100%;
+    /* Sublinhado expande ao passar o mouse */
+}
+
+/* ============================================================
+   SEÇÃO HERO (BANNER PRINCIPAL)
+   ============================================================ */
+
+.hero {
+    height: 100vh;
+    background: url('img/background.jpg') no-repeat center center/cover;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Camada escura sobre a imagem para destacar o texto */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+}
+
+.container-hero-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 50px;
+    text-align: left;
+    z-index: 2;
+}
+
+.welcome-text {
+    color: #4a90e2;
+    font-size: 14px;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    font-family: sans-serif;
+}
+
+.hero h1 {
+    color: #fff;
+    font-size: 72px;
+    font-weight: 400;
+    margin-bottom: 15px;
+    font-family: 'Times New Roman', serif;
+}
+
+.hero-subtitle {
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 35px;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.btn-hero {
+    display: inline-block;
+    padding: 12px 35px;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s ease;
+}
+
+.btn-hero:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+/* ============================================================
+   SEÇÃO ÁREAS DE ATUAÇÃO (CARDS)
+   ============================================================ */
+
+.titulo-atuacao {
+    text-align: center;
+    font-size: 32px;
+    color: #1a1a1a;
+    margin-bottom: 50px;
+    font-weight: 500;
+}
+
+.subtitulo-atuacao {
+    text-align: center;
+    color: #0763cc;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.atuacao-container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+/* Grid layout para organizar os cards em 3 colunas */
+.grid-atuacao {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    align-items: stretch;
+}
+
+.card {
+    display: flex;
+    background: #fff;
+    border: 1px solid #333;
+    border-radius: 5%;
+    height: 100%;
+    padding: 40px 20px;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border-color: #4a90e2;
+}
+
+.icon-placeholder {
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.card h3 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+
+.card p {
+    flex-grow: 1;
+    /* Faz o texto ocupar o espaço disponível para alinhar os botões/rodapé do card */
+    min-height: 100px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    max-width: 250px;
+}
+
+/* ============================================================
+   SEÇÃO PERFIL E CONTATO
+   ============================================================ */
+
+.perfil-advogado-container {
+    padding: 50px 20px;
+    background: #061d4f;
+    background: linear-gradient(90deg, rgba(6, 29, 79, 1) 0%, rgb(12, 15, 13) 50%, rgb(32, 32, 30) 100%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.titulo-equipe {
+    text-align: center;
+    font-size: 32px;
+    color: #ffffff;
+    margin-bottom: 50px;
+    font-weight: 500;
+}
+
+.contato-container {
+    padding: 80px 20px;
+    background-color: #f9f9f9;
+}
+
+.contato-paragrafo {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 40px;
+    color: #1a1a1a;
+}
+
+#form-contato {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Estilo dos campos de texto (Inputs e Textarea) */
+#form-contato input,
+#form-contato textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background: #fff;
+    transition: border-color 0.3s;
+}
+
+/* Efeito de foco (cor azul que você usou) */
+#form-contato input:focus,
+#form-contato textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+/* Estilo da imagem do advogado com texto sobreposto */
+.foto-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+
+/* Imagem ocupando todo o espaço */
+.imagem-perfil {
+    width: 100%;
+    display: block;
+}
+
+.info-sobreposta {
+    position: absolute;
+    /* Fixa o texto sobre a imagem */
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-align: left;
+}
+
+/* Estilo do Nome */
+.info-sobreposta h2 {
+    font-size: 2.5rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Estilo do Cargo */
+.info-sobreposta p {
+    font-size: 1.4rem;
+    color: #4a90e2;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.card:hover {
+    background: #c5a059;
+    transform: translateY(-5px);
+}
+
+
+input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-enviar {
+    width: 100%;
+    padding: 15px;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-enviar:hover {
+    background-color: #4a90e2;
+}
+
+/* ============================================================
+   RODAPÉ (FOOTER)
+   ============================================================ */
+
+footer {
+    background: #061d4f;
+    background: linear-gradient(90deg, rgba(6, 29, 79, 1) 0%, rgb(12, 15, 13) 50%, rgb(32, 32, 30) 100%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 60px 0;
+    margin-top: 40px;
+}
+
+.container-footer-grid {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    flex-wrap: wrap;
+    /* Permite que os itens quebrem linha se não houver espaço */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+
+}
+
+.footer-logo img {
+    max-width: 250px;
+    height: auto;
+}
+
+.footer-links h4,
+.footer-horarios h4 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    color: #4a90e2;
+}
+
+.footer-horarios li {
+    color: #ccc;
+    line-height: 1.6;
+    list-style: none;
+}
+
+.footer-endereco {
+    font-size: 1rem;
+    color: #ccc;
+}
+
+/* ============================================================
+   RESPONSIVIDADE (MOBILE)
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    header {
+        position: flex;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 2000;
+        height: 70px;
+    }
+
+    .menu-toggle {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        z-index: 3000;
+        position: absolute;
+        right: 20px;
+        top: 25px;
+    }
+
+    .menu-toggle span {
+        width: 25px;
+        height: 3px;
+        background-color: #fff;
+        transition: 0.3s;
+    }
+
+    /* Transforma o menu em uma janela lateral oculta */
+    .navbar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        height: 100vh;
+        background: #061d4f;
+        background: linear-gradient(90deg, rgba(6, 29, 79, 1) 0%, rgb(12, 15, 13) 50%, rgb(32, 32, 30) 100%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: 0.5s ease-in-out;
+        z-index: 2000;
+    }
+
+    .navbar.active {
+        right: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    nav ul li a {
+        font-size: 18px;
+        display: block;
+    }
+
+    /* Ajusta a grid de especialidades para uma coluna só no celular */
+    .grid-atuacao {
+        grid-template-columns: 1fr !important;
+        padding: 0 10px;
+        gap: 20px;
+    }
+
+    .info-sobreposta h2 {
+        font-size: 1.4rem;
+    }
+
+    .info-sobreposta p {
+        font-size: 1rem;
+    }
+
+    .info-sobreposta {
+        bottom: 10px;
+        left: 10px;
+    }
+
+    .hero {
+        height: 80vh;
+    }
+
+    .hero h1 {
+        font-size: 30px !important;
+        line-height: 1.1;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .container-hero-content {
+        padding: 0 20px !important;
+        text-align: center !important;
+    }
+
+    #form-contato {
+        width: 90%;
+        padding: 0 10px;
+    }
+
+    input,
+    textarea {
+        font-size: 16px !important;
+    }
+
+    .slogan-img {
+        margin: 0 0 15px 0;
+        height: 70px;
+    }
+
+    /* Empilha os elementos do rodapé verticalmente */
+    .container-footer-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 50px;
+    }
+}

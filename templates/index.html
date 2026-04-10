@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Evaristo - Advocacia e Consultoria</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=location_on" />
+</head>
+
+<body>
+
+    <header>
+        <div class="container-nav-container">
+            <div class="logo">
+                <a href="/"><img src="/static/img/slogan.png" alt="Slogan Advocacia" class="slogan-img"></a>
+            </div>
+            <nav class="navbar" id="navbar-menu">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#sobre">Sobre Nós</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                    <li><a href="/login" style="opacity: 0.1; font-size: 8px;">.</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-overlay">
+            <div class="container-hero-content">
+                <p class="welcome-text">SEJA BEM-VINDO!</p>
+                <h1>Lucas Evaristo -</h1>
+                <h1>Advocacia e Consultoria</h1>
+                <p class="hero-subtitle">
+                    {% if dados and dados.slogan %}{{ dados.slogan }}{% else %}Transformando desafios jurídicos complexos em soluções eficazes e personalizadas{% endif %}
+                </p>
+                <a href="#contato" class="btn-hero">ENTRE EM CONTATO</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="atuacao-container">
+        <p class="subtitulo-atuacao"><strong>NOSSAS ESPECIALIDADES</strong></p>
+        <h2 class="titulo-atuacao">Áreas de atuação</h2>
+
+        <div class="grid-atuacao">
+            <div class="card">
+                <div class="icon-placeholder">⚖️</div>
+                <h3><strong>Criminal</strong></h3>
+                <p>Atuação em Audiências, Sustentações Orais, Acompanhamento em Delegacias, Processos Penais e Medidas Cautelares</p>
+            </div>
+
+            <div class="card">
+                <div class="icon-placeholder">💼</div>
+                <h3><strong>Trabalhista</strong></h3>
+                <p>Consultoria e litígio em relações de trabalho para empregados e empresas...</p>
+            </div>
+
+            <div class="card">
+                <div class="icon-placeholder">🏛️</div>
+                <h3><strong>Cível</strong></h3>
+                <p>O Direito Civil é a espinha dorsal da cidadania, protegendo a dignidade humana ao regular relações, garantir propriedades e assegurar a justiça nas escolhas individuais. Como pilar da sociedade, ele transforma direitos em liberdade e responsabilidades em segurança. </p>
+            </div>
+
+            <div class="card">
+                <div class="icon-placeholder">🛒</div>
+                <h3><strong>Consumidor</strong></h3>
+                <p>Proteção contra práticas abusivas e defesa dos direitos do consumidor.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon-placeholder">👵</div>
+                <h3><strong>Previdenciário</strong></h3>
+                <p>Auxílio na obtenção de aposentadorias, auxílios e benefícios do INSS.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="perfil-advogado-container">
+        <h1 class="titulo-equipe">Nosso Corpo Jurídico</h1>
+        <div class="foto-container">
+            <img src="/static/img/foto-perfil.jpeg" alt="Lucas Evaristo" class="imagem-perfil">
+            <div class="info-sobreposta">
+                <h2>Lucas Evaristo</h2>
+                <p>Advogado</p>
+            </div>
+        </div>
+        {% if dados and dados.sobre_nos %}
+        <div style="max-width: 800px; margin: 20px auto; text-align: center; color: white; opacity: 0.8; font-size: 14px;">
+            <p>{{ dados.sobre_nos }}</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <section id="contato" class="contato-container">
+        <h2 class="contato-paragrafo">Fale Conosco</h2>
+        <form onsubmit="enviarWhats(event)" id="form-contato">
+            <div class="form-group">
+                <input type="text" id="nome" name="nome" placeholder="Seu Nome" required>
+            </div>
+            <div class="form-group">
+                <input type="tel" id="telefone" name="telefone" placeholder="Seu Telefone" required>
+            </div>
+            <div class="form-group">
+                <textarea id="mensagem" name="mensagem" placeholder="Sua Mensagem" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+        </form>
+    </section>
+
+    <footer>
+        <div class="container-footer-grid">
+            <div class="footer-logo">
+                <a href="#home"><img src="/static/img/slogan.png" alt="Slogan Footer"></a>
+            </div>
+            <div class="footer-links">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#sobre">Sobre Nós</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer-horarios">
+                <h4>Horários</h4>
+                <ul>
+                    <li>Segunda a Sexta: 09:00 - 18:00</li>
+                    <li>Sábado e Domingo: Fechado</li>
+                </ul>
+            </div>
+            <div class="footer-endereco">
+                <span class="material-symbols-outlined">location_on</span>
+                {% if dados and dados.contato_endereco %}{{ dados.contato_endereco }}{% else %}Av. Brasil, 1975 - Loja 1991 - Centro, Juiz de Fora -MG, 36060-010{% endif %}
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function enviarWhats(event) {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const mensagem = document.getElementById('mensagem').value;
+            
+            // Puxa o telefone dinâmico ou usa o seu padrão
+            const telBanco = "{{ dados.contato_telefone if dados else '5532988134080' }}";
+            const telDestino = telBanco.replace(/\D/g, ''); 
+
+            const texto = `Olá! Me chamo ${nome}. ${mensagem}`
+            const msgFormatada = encodeURIComponent(texto);
+            const url = `https://wa.me/${telDestino}?text=${msgFormatada}`;
+            window.open(url, '_blank');
+        }
+
+        const btnMenu = document.getElementById('mobile-menu');
+        const nav = document.querySelector('.navbar');
+        btnMenu.addEventListener('click', () => { nav.classList.toggle('active'); });
+        document.querySelectorAll('.navbar a').forEach(link => {
+            link.addEventListener('click', () => { nav.classList.remove('active'); });
+        });
+    </script>
+</body>
+</html>
