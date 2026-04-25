@@ -559,6 +559,9 @@ body{
     <div class="nav-item" onclick="showSection('contato')">
       <span class="nav-icon">✉</span> Contato & WhatsApp
     </div>
+    <div class="nav-item" onclick="showSection('sobre-nos')">
+      <span class="nav-icon">◎</span> Sobre Nós
+    </div>
     <div class="nav-item" onclick="showSection('footer')">
       <span class="nav-icon">▤</span> Rodapé
     </div>
@@ -594,8 +597,8 @@ body{
       <div class="stats-row">
         <div class="stat-card">
           <div class="stat-label">Seções de Texto</div>
-          <div class="stat-value">5</div>
-          <div class="stat-sub">Hero, Cards, Perfil, Contato, Footer</div>
+          <div class="stat-value">6</div>
+          <div class="stat-sub">Hero, Cards, Perfil, Contato, Sobre Nós, Footer</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Especialidades</div>
@@ -609,7 +612,7 @@ body{
         </div>
         <div class="stat-card">
           <div class="stat-label">API Endpoints</div>
-          <div class="stat-value">12</div>
+          <div class="stat-value">13</div>
           <div class="stat-sub">GET, PUT, POST disponíveis</div>
         </div>
       </div>
@@ -633,6 +636,7 @@ body{
           <code>PUT  /api/conteudo/perfil</code> — Editar Perfil<br>
           <code>PUT  /api/conteudo/contato</code> — Editar Contato<br>
           <code>PUT  /api/conteudo/footer</code> — Editar Rodapé<br>
+          <code>PUT  /api/conteudo/sobre-nos</code> — Editar Sobre Nós<br>
           <code>POST /api/imagens/logo</code> — Upload Logo<br>
           <code>POST /api/imagens/perfil</code> — Upload Foto Perfil<br>
           <code>POST /api/imagens/background</code> — Upload Background<br>
@@ -788,6 +792,95 @@ body{
       </div>
     </div>
 
+    <!-- ── Sobre Nós ── -->
+    <div id="sec-sobre-nos" class="section">
+      <div class="page-header">
+        <h2>Sobre Nós</h2>
+        <p>Textos da página "Sobre Nós" — Quem Somos, Trajetória e Linha do Tempo.</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3>Hero — Sobre Nós</h3></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Subtítulo do Hero</label>
+              <input type="text" id="sobrenos-hero_subtitulo">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-gold" onclick="salvarSobreNosHero()">Salvar Hero Sobre Nós</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3>Quem Somos</h3></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Subtítulo</label>
+              <input type="text" id="sobrenos-quem_somos_subtitulo">
+            </div>
+            <div class="form-group">
+              <label>Título</label>
+              <input type="text" id="sobrenos-quem_somos_titulo">
+            </div>
+          </div>
+          <div class="form-grid single" style="margin-top:14px;">
+            <div class="form-group">
+              <label>Parágrafo 1</label>
+              <textarea id="sobrenos-quem_somos_texto_1"></textarea>
+            </div>
+          </div>
+          <div class="form-grid single">
+            <div class="form-group">
+              <label>Parágrafo 2</label>
+              <textarea id="sobrenos-quem_somos_texto_2"></textarea>
+            </div>
+          </div>
+          <div class="form-grid single">
+            <div class="form-group">
+              <label>Parágrafo 3</label>
+              <textarea id="sobrenos-quem_somos_texto_3"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-gold" onclick="salvarSobreNosQuemSomos()">Salvar Quem Somos</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3>Trajetória — Cabeçalho</h3></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Subtítulo</label>
+              <input type="text" id="sobrenos-trajetoria_subtitulo">
+            </div>
+            <div class="form-group">
+              <label>Título</label>
+              <input type="text" id="sobrenos-trajetoria_titulo">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-gold" onclick="salvarSobreNosTrajetoria()">Salvar Trajetória</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3>Linha do Tempo</h3></div>
+        <div class="panel-body">
+          <div class="cards-grid" id="timeline-grid"></div>
+          <div class="form-actions" style="margin-top:16px;">
+            <button class="btn btn-gold" onclick="salvarSobreNosTimeline()">Salvar Linha do Tempo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ── Footer ── -->
     <div id="sec-footer" class="section">
       <div class="page-header">
@@ -921,7 +1014,8 @@ function apiFetch(url, opts = {}) {
 const TITLES = {
   dashboard: 'Dashboard', hero: 'Seção Principal (Hero)',
   especialidades: 'Especialidades', perfil: 'Perfil do Advogado',
-  contato: 'Contato & WhatsApp', footer: 'Rodapé', imagens: 'Imagens'
+  contato: 'Contato & WhatsApp', 'sobre-nos': 'Sobre Nós',
+  footer: 'Rodapé', imagens: 'Imagens'
 };
 
 function showSection(id) {
@@ -969,6 +1063,13 @@ function preencherFormularios() {
     const el = document.getElementById('footer-' + k);
     if (el) el.value = v;
   });
+
+  // Sobre Nós
+  Object.entries(conteudo.sobre_nos || {}).forEach(([k,v]) => {
+    const el = document.getElementById('sobrenos-' + k);
+    if (el) el.value = v;
+  });
+  renderTimeline();
 }
 
 function renderCards(cards) {
@@ -1105,6 +1206,65 @@ async function resetConteudo() {
   } catch {
     toast('Erro ao restaurar', 'error');
   }
+}
+
+// ─── Sobre Nós ─────────────────────────────────────────────────────
+function renderTimeline() {
+  const sn = conteudo.sobre_nos || {};
+  const items = [
+    { ano: sn.timeline_ano_1, titulo: sn.timeline_titulo_1, desc: sn.timeline_desc_1 },
+    { ano: sn.timeline_ano_2, titulo: sn.timeline_titulo_2, desc: sn.timeline_desc_2 },
+    { ano: sn.timeline_ano_3, titulo: sn.timeline_titulo_3, desc: sn.timeline_desc_3 },
+    { ano: sn.timeline_ano_4, titulo: sn.timeline_titulo_4, desc: sn.timeline_desc_4 },
+  ];
+  const grid = document.getElementById('timeline-grid');
+  grid.innerHTML = items.map((item, i) => `
+    <div class="card-editor">
+      <div class="card-editor-title">Etapa ${i+1}</div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label>Ano</label>
+        <input type="text" id="tl-${i}-ano" value="${item.ano || ''}">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label>Título</label>
+        <input type="text" id="tl-${i}-titulo" value="${item.titulo || ''}">
+      </div>
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea id="tl-${i}-desc">${item.desc || ''}</textarea>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function salvarSobreNosHero() {
+  const body = { hero_subtitulo: document.getElementById('sobrenos-hero_subtitulo').value };
+  await salvarSecao('/api/conteudo/sobre-nos', body);
+}
+
+async function salvarSobreNosQuemSomos() {
+  const fields = ['quem_somos_subtitulo','quem_somos_titulo','quem_somos_texto_1','quem_somos_texto_2','quem_somos_texto_3'];
+  const body = {};
+  fields.forEach(k => { body[k] = document.getElementById('sobrenos-' + k).value; });
+  await salvarSecao('/api/conteudo/sobre-nos', body);
+}
+
+async function salvarSobreNosTrajetoria() {
+  const body = {
+    trajetoria_subtitulo: document.getElementById('sobrenos-trajetoria_subtitulo').value,
+    trajetoria_titulo: document.getElementById('sobrenos-trajetoria_titulo').value,
+  };
+  await salvarSecao('/api/conteudo/sobre-nos', body);
+}
+
+async function salvarSobreNosTimeline() {
+  const body = {};
+  for (let i = 0; i < 4; i++) {
+    body['timeline_ano_' + (i+1)]    = document.getElementById(`tl-${i}-ano`).value;
+    body['timeline_titulo_' + (i+1)] = document.getElementById(`tl-${i}-titulo`).value;
+    body['timeline_desc_' + (i+1)]   = document.getElementById(`tl-${i}-desc`).value;
+  }
+  await salvarSecao('/api/conteudo/sobre-nos', body);
 }
 
 // ─── Toast ────────────────────────────────────────────────────────

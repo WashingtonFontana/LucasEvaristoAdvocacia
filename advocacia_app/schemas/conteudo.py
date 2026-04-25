@@ -58,3 +58,26 @@ class FooterUpdate(BaseModel):
     horario_semana:  Optional[str] = None
     horario_fim:     Optional[str] = None
     endereco:        Optional[str] = None
+
+
+class SobreNosUpdate(BaseModel):
+    hero_subtitulo:         Optional[str] = None
+    quem_somos_subtitulo:  Optional[str] = None
+    quem_somos_titulo:     Optional[str] = None
+    quem_somos_texto_1:    Optional[str] = None
+    quem_somos_texto_2:    Optional[str] = None
+    quem_somos_texto_3:    Optional[str] = None
+    trajetoria_subtitulo:  Optional[str] = None
+    trajetoria_titulo:     Optional[str] = None
+    timeline_ano_1:        Optional[str] = None
+    timeline_titulo_1:     Optional[str] = None
+    timeline_desc_1:       Optional[str] = None
+    timeline_ano_2:        Optional[str] = None
+    timeline_titulo_2:     Optional[str] = None
+    timeline_desc_2:       Optional[str] = None
+    timeline_ano_3:        Optional[str] = None
+    timeline_titulo_3:     Optional[str] = None
+    timeline_desc_3:       Optional[str] = None
+    timeline_ano_4:        Optional[str] = None
+    timeline_titulo_4:     Optional[str] = None
+    timeline_desc_4:       Optional[str] = None

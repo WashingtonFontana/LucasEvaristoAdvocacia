@@ -38,91 +38,67 @@
     <section class="hero hero-sobre">
         <div class="hero-overlay">
             <div class="container-hero-content">
-                <p class="welcome-text">CONHEÇA NOSSA HISTÓRIA</p>
-                <h1>Lucas Evaristo —</h1>
+                <p class="welcome-text">{{ dados.sobre_nos.quem_somos_subtitulo }}</p>
+                <h1>{{ dados.sobre_nos.quem_somos_titulo }}</h1>
                 <h1>Advocacia e Consultoria</h1>
                 <p class="hero-subtitle">
-                    Comprometimento, ética e técnica a serviço da justiça desde 2019.
+                    {{ dados.sobre_nos.hero_subtitulo }}
                 </p>
             </div>
         </div>
     </section>
 
-            <div class="sobre-texto-col">
-                <p class="subtitulo-atuacao">QUEM SOMOS</p>
-                <h2 class="sobre-titulo-principal">Dr. Lucas Evaristo</h2>
-                <div class="sobre-linha-dourada"></div>
-                <p class="sobre-paragrafo">
-                    A história do escritório Lucas Evaristo Advocacia e Consultoria é a história de uma vocação.
-                    Uma escolha deliberada pelo Direito como instrumento de justiça, equilíbrio e proteção — nas
-                    causas do trabalho, nas demandas do consumidor, nos processos criminais e nas relações civis
-                    que moldam o cotidiano das pessoas.
-                </p>
-                <p class="sobre-paragrafo">
-                    Inscrito na Ordem dos Advogados do Brasil desde 2019, o Dr. Lucas Evaristo construiu
-                    sua trajetória com método e seriedade, acumulando experiência prática em diferentes
-                    frentes do Direito. Com base em Juiz de Fora — MG, atua em audiências, delegacias,
-                    varas trabalhistas e juizados especiais, sempre com presença ativa e acompanhamento
-                    próximo ao cliente em cada etapa do processo.
-                </p>
-                <p class="sobre-paragrafo">
-                    Mais de cinco anos de atuação contínua, com casos nas áreas Criminal, Trabalhista,
-                    Cível, do Consumidor e Previdenciária, formaram um profissional versátil e tecnicamente
-                    sólido — capaz de traduzir o complexo universo jurídico em soluções claras,
-                    eficazes e personalizadas para cada cliente.
-                </p>
-
+    <!-- ══ QUEM SOMOS ═══════════════════════════════════════════════════ -->
+    <section class="sobre-quem-section">
+        <div class="sobre-quem-container">
+            <p class="subtitulo-atuacao text-center">{{ dados.sobre_nos.quem_somos_subtitulo }}</p>
+            <h2 class="sobre-titulo-principal">{{ dados.sobre_nos.quem_somos_titulo }}</h2>
+            <div class="sobre-linha-dourada"></div>
+            <div class="sobre-conteudo-texto">
+                <p class="sobre-paragrafo">{{ dados.sobre_nos.quem_somos_texto_1 }}</p>
+                <p class="sobre-paragrafo">{{ dados.sobre_nos.quem_somos_texto_2 }}</p>
+                <p class="sobre-paragrafo">{{ dados.sobre_nos.quem_somos_texto_3 }}</p>
             </div>
-
         </div>
     </section>
 
     <!-- ══ LINHA DO TEMPO / TRAJETÓRIA ═════════════════════════════════ -->
     <section class="sobre-trajetoria-section">
         <div class="sobre-trajetoria-container">
-            <p class="subtitulo-atuacao">TRAJETÓRIA</p>
-            <h2 class="titulo-atuacao">Uma carreira construída com propósito</h2>
+            <p class="subtitulo-atuacao text-center">{{ dados.sobre_nos.trajetoria_subtitulo }}</p>
+            <h2 class="titulo-atuacao text-center">{{ dados.sobre_nos.trajetoria_titulo }}</h2>
+            <div class="sobre-linha-dourada"></div>
 
             <div class="sobre-timeline">
-
                 <div class="sobre-timeline-item">
-                    <div class="sobre-timeline-ano">2019</div>
+                    <div class="sobre-timeline-ano">{{ dados.sobre_nos.timeline_ano_1 }}</div>
                     <div class="sobre-timeline-conteudo">
-                        <h3>Inscrição na OAB/MG</h3>
-                        <p>Após a conclusão da graduação em Direito, o Dr. Lucas Evaristo obtém sua inscrição
-                        na Ordem dos Advogados do Brasil — seccional Minas Gerais — e inicia sua atuação
-                        profissional com foco em causas cíveis e do consumidor.</p>
+                        <h3 class="titulo-conteudo">{{ dados.sobre_nos.timeline_titulo_1 }}</h3>
+                        <p class="sobre-paragrafo-timeline">{{ dados.sobre_nos.timeline_desc_1 }}</p>
                     </div>
                 </div>
 
                 <div class="sobre-timeline-item">
-                    <div class="sobre-timeline-ano">2020</div>
+                    <div class="sobre-timeline-ano">{{ dados.sobre_nos.timeline_ano_2 }}</div>
                     <div class="sobre-timeline-conteudo">
-                        <h3>Expansão para o Direito Criminal</h3>
-                        <p>Amplia sua atuação para o Direito Penal, passando a acompanhar clientes em
-                        delegacias, audiências de custódia e processos criminais. Desenvolve expertise
-                        em medidas cautelares e sustentações orais perante o Tribunal.</p>
+                        <h3 class="titulo-conteudo">{{ dados.sobre_nos.timeline_titulo_2 }}</h3>
+                        <p class="sobre-paragrafo-timeline">{{ dados.sobre_nos.timeline_desc_2 }}</p>
                     </div>
                 </div>
 
                 <div class="sobre-timeline-item">
-                    <div class="sobre-timeline-ano">2021</div>
+                    <div class="sobre-timeline-ano">{{ dados.sobre_nos.timeline_ano_3 }}</div>
                     <div class="sobre-timeline-conteudo">
-                        <h3>Direito Trabalhista e Previdenciário</h3>
-                        <p>Consolida sua presença nas áreas trabalhista e previdenciária, assessorando
-                        tanto empregados quanto empresas em relações de trabalho, além de auxiliar
-                        segurados na obtenção de benefícios junto ao INSS.</p>
+                        <h3 class="titulo-conteudo">{{ dados.sobre_nos.timeline_titulo_3 }}</h3>
+                        <p class="sobre-paragrafo-timeline">{{ dados.sobre_nos.timeline_desc_3 }}</p>
                     </div>
                 </div>
 
                 <div class="sobre-timeline-item">
-                    <div class="sobre-timeline-ano">2022 — hoje</div>
+                    <div class="sobre-timeline-ano">{{ dados.sobre_nos.timeline_ano_4 }}</div>
                     <div class="sobre-timeline-conteudo">
-                        <h3>Escritório próprio em Juiz de Fora</h3>
-                        <p>Funda o escritório Lucas Evaristo Advocacia e Consultoria, com sede no centro
-                        de Juiz de Fora — MG. Passa a atender clientes de forma personalizada e direta,
-                        com acompanhamento próximo em todas as fases processuais e foco em soluções
-                        jurídicas eficazes e humanizadas.</p>
+                        <h3 class="titulo-conteudo">{{ dados.sobre_nos.timeline_titulo_4 }}</h3>
+                        <p class="sobre-paragrafo-timeline">{{ dados.sobre_nos.timeline_desc_4 }}</p>
                     </div>
                 </div>
 
@@ -130,19 +106,20 @@
         </div>
     </section>
 
-
     <!-- ══ CTA CONTATO ══════════════════════════════════════════════════ -->
-     <section id="contato" class="contato-container">
+    <section id="contato" class="contato-container">
         <h2 class="contato-paragrafo">{{ dados.contato.titulo }}</h2>
         <form onsubmit="enviarWhats(event)" id="form-contato">
             <div class="form-group">
                 <input type="text" id="nome" name="nome" placeholder="{{ dados.contato.placeholder_nome }}" required>
             </div>
             <div class="form-group">
-                <input type="tel" id="telefone" name="telefone" placeholder="{{ dados.contato.placeholder_telefone }}" required>
+                <input type="tel" id="telefone" name="telefone" placeholder="{{ dados.contato.placeholder_telefone }}"
+                    required>
             </div>
             <div class="form-group">
-                <textarea id="mensagem" name="mensagem" placeholder="{{ dados.contato.placeholder_mensagem }}" rows="5" required></textarea>
+                <textarea id="mensagem" name="mensagem" placeholder="{{ dados.contato.placeholder_mensagem }}" rows="5"
+                    required></textarea>
             </div>
             <button type="submit" class="btn-enviar">{{ dados.contato.btn_texto }}</button>
         </form>
@@ -152,14 +129,14 @@
     <footer>
         <div class="container-footer-grid">
             <div class="footer-logo">
-                <a href="#home"><img src="/static/img/slogan.png" alt="Slogan Footer"></a>
+                <a href="/"><img src="/static/img/slogan.png" alt="Slogan Footer"></a>
             </div>
             <div class="footer-links">
                 <h4>{{ dados.footer.links_titulo }}</h4>
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#sobre">Sobre Nós</a></li>
-                    <li><a href="#contato">Contato</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/sobre-nos">Sobre Nós</a></li>
+                    <li><a href="/#contato">Contato</a></li>
                 </ul>
             </div>
             <div class="footer-horarios">
@@ -173,6 +150,11 @@
                 <span class="material-symbols-outlined">location_on</span>
                 {{ dados.footer.endereco }}
             </div>
+        </div>
+        <div class="footer-credits">
+            <span class="footer-direitos-reservados">&copy; 2026 Lucas Evaristo - Advocacia e Consultoria. Todos os
+                direitos reservados.</span>
+            <span class="footer-dev">Desenvolvido por Washington Fontana Netto</span>
         </div>
     </footer>
 
@@ -200,4 +182,5 @@
     </script>
 
 </body>
+
 </html>

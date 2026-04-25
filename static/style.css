@@ -430,6 +430,169 @@ footer {
     color: #ccc;
 }
 
+.footer-credits {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    background: rgba(0, 0, 0, 0.25);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 40px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.footer-direitos-reservados {
+    color: #c5a059;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.footer-dev {
+    color: #4a90e2;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.footer-credits span:last-child {
+    font-style: italic;
+}
+
+/* ============================================================
+   PÁGINA SOBRE NÓS
+   ============================================================ */
+
+.hero-sobre {
+    height: 60vh;
+    background: url('img/background.jpg') no-repeat center center/cover;
+}
+
+.text-center {
+    text-align: center !important;
+    display: block;
+    width: 100%;
+}
+
+.sobre-quem-section {
+    padding: 80px 20px;
+    background-color: #fff;
+}
+
+.sobre-quem-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.sobre-conteudo-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.sobre-titulo-principal {
+    text-align: center;
+    font-size: 36px;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    font-weight: 500;
+    font-family: 'Times New Roman', serif;
+}
+
+.sobre-linha-dourada {
+    width: 50px;
+    height: 3px;
+    background-color: #c5a059;
+    margin: 0 auto 24px;
+}
+
+.sobre-paragrafo {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.85;
+    margin-bottom: 18px;
+}
+
+.sobre-trajetoria-section {
+    padding: 80px 20px;
+    background-color: #f4f4f4;
+}
+
+.sobre-trajetoria-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.sobre-timeline {
+    position: relative;
+    padding-left: 30px;
+    margin-top: 50px;
+}
+
+.sobre-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #061d4f, #4a90e2);
+}
+
+.sobre-timeline-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 30px;
+    margin-bottom: 48px;
+    position: relative;
+}
+
+.sobre-timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.sobre-timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -37px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #c5a059;
+    border: 3px solid #f4f4f4;
+    box-shadow: 0 0 0 2px #c5a059;
+}
+
+.sobre-paragrafo-timeline {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.75;
+}
+
+.sobre-timeline-ano {
+    font-family: 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #061d4f;
+    padding-top: 2px;
+    white-space: nowrap;
+}
+
+.sobre-timeline-conteudo h3 {
+    font-size: 1.2rem;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.titulo-conteudo {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
 
 
 /* ============================================================
@@ -560,5 +723,43 @@ footer {
         text-align: center;
         gap: 50px;
     }
-}
 
+    .footer-credits {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px 20px;
+        gap: 8px;
+    }
+
+    .sobre-timeline-conteudo .sobre-paragrafo {
+        font-size: 0.9rem;
+    }
+
+    .sobre-titulo-principal {
+        font-size: 26px;
+    }
+
+    .sobre-timeline-item {
+        grid-template-columns: 1fr;
+    }
+
+    .sobre-timeline-ano {
+        font-size: 15px;
+    }
+
+    .sobre-paragrafo {
+        font-size: 14px;
+    }
+
+    .sobre-quem-section {
+        padding: 50px 20px;
+    }
+
+    .sobre-trajetoria-section {
+        padding: 50px 20px;
+    }
+
+    .hero-sobre {
+        height: 50vh;
+    }
+}

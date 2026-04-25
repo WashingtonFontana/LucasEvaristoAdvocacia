@@ -11,6 +11,7 @@ Protegida pelo fastapi-users (current_active_user).
   PUT  /api/conteudo/perfil
   PUT  /api/conteudo/contato
   PUT  /api/conteudo/footer
+  PUT  /api/conteudo/sobre-nos
   POST /api/conteudo/reset
 """
 
@@ -30,6 +31,7 @@ from advocacia_app.schemas.conteudo import (
     FooterUpdate,
     HeroUpdate,
     PerfilUpdate,
+    SobreNosUpdate,
 )
 
 router = APIRouter(prefix="/api/conteudo", tags=["Conteúdo API"])
@@ -155,6 +157,16 @@ def update_footer(
 ) -> dict:
     _upsert(db, "footer", payload.model_dump(exclude_none=True), str(user.email), "UPDATE_FOOTER")
     return {"ok": True, "footer": montar_conteudo(db).get("footer")}
+
+
+@router.put("/sobre-nos", summary="Atualiza a página Sobre Nós")
+def update_sobre_nos(
+    payload: SobreNosUpdate,
+    user: User = Depends(current_active_user),
+    db: sqlite3.Connection = Depends(get_content_db),
+) -> dict:
+    _upsert(db, "sobre_nos", payload.model_dump(exclude_none=True), str(user.email), "UPDATE_SOBRE_NOS")
+    return {"ok": True, "sobre_nos": montar_conteudo(db).get("sobre_nos")}
 
 
 # ─── Reset ────────────────────────────────────────────────────────────────────
