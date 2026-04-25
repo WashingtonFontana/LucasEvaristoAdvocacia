@@ -18,13 +18,14 @@ Tabelas gerenciadas aqui:
 Responsabilidades:
   • DDL e seed automáticos via init_content_db()
   • Dependência FastAPI get_content_db() — uma conexão por request
-  • Helpers fetchone / fetchall / execute
+  • Helpers fetchone / fetchall / execute / montar_conteudo
 """
 
 import hashlib
 import json
 import sqlite3
 from collections.abc import Generator
+from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 
@@ -162,3 +163,35 @@ def execute(conn: sqlite3.Connection, sql: str, params: tuple = ()) -> int:
     cur = conn.execute(sql, params)
     conn.commit()
     return cur.lastrowid
+
+
+def montar_conteudo(conn: sqlite3.Connection) -> dict:
+    """Reconstrói o dicionário completo de conteúdo a partir do banco.
+
+    Usado pelos routers públicos e admin para popular os templates Jinja2
+    e os endpoints da API REST. Evita duplicação de lógica de consulta.
+    """
+    linhas = fetchall(conn, "SELECT secao, chave, valor FROM conteudo")
+    data: dict = {}
+    for row in linhas:
+        data.setdefault(row["secao"], {})[row["chave"]] = row["valor"]
+    cards = fetchall(conn, "SELECT icone, titulo, descricao FROM cards ORDER BY ordem")
+    data.setdefault("especialidades", {})["cards"] = cards
+    return data
+
+
+@contextmanager
+def atomic(conn: sqlite3.Connection):
+    """Context manager para operações atômicas.
+
+    Commit ao final do bloco se não houver exceção; rollback caso contrário.
+    Internamente desabilita o auto-commit do helper execute() ao abrir
+    uma transação explícita.
+    """
+    conn.execute("BEGIN")
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise

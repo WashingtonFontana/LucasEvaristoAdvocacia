@@ -10,7 +10,9 @@ Protegida pelo fastapi-users (current_active_user).
   POST /api/imagens/background   → substitui o fundo do hero
 """
 
+import re
 import sqlite3
+import unicodedata
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 
@@ -20,6 +22,15 @@ from advocacia_app.core.config import ALLOWED_IMAGE_TYPES, IMG_DIR, MAX_IMAGE_SI
 from advocacia_app.core.content_db import execute, fetchall, get_content_db
 
 router = APIRouter(prefix="/api/imagens", tags=["Imagens API"])
+
+_ALLOWED_EXTS: set[str] = {"jpg", "jpeg", "png", "webp", "gif"}
+
+
+def _sanitize_filename(name: str) -> str:
+    """Normaliza e sanitiza um nome de arquivo, removendo caracteres perigosos."""
+    name = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii")
+    name = re.sub(r"[^a-zA-Z0-9._-]", "", name.strip())
+    return name
 
 
 # ─── Helper ───────────────────────────────────────────────────────────────────
@@ -54,7 +65,10 @@ def _salvar_imagem(
             detail=f"Arquivo muito grande. Máximo permitido: {MAX_IMAGE_SIZE_MB} MB.",
         )
 
-    ext = upload.filename.rsplit(".", 1)[-1].lower() if "." in upload.filename else "jpg"
+    raw_name = _sanitize_filename(upload.filename) if upload.filename else "upload.jpg"
+    ext = raw_name.rsplit(".", 1)[-1].lower() if "." in raw_name else "jpg"
+    if ext not in _ALLOWED_EXTS:
+        ext = "jpg"
     caminho = IMG_DIR / f"{nome_canonical}.{ext}"
 
     # Remove versões anteriores com extensões diferentes

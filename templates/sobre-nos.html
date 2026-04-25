@@ -133,18 +133,18 @@
 
     <!-- ══ CTA CONTATO ══════════════════════════════════════════════════ -->
      <section id="contato" class="contato-container">
-        <h2 class="contato-paragrafo">Fale Conosco</h2>
+        <h2 class="contato-paragrafo">{{ dados.contato.titulo }}</h2>
         <form onsubmit="enviarWhats(event)" id="form-contato">
             <div class="form-group">
-                <input type="text" id="nome" name="nome" placeholder="Seu Nome" required>
+                <input type="text" id="nome" name="nome" placeholder="{{ dados.contato.placeholder_nome }}" required>
             </div>
             <div class="form-group">
-                <input type="tel" id="telefone" name="telefone" placeholder="Seu Telefone" required>
+                <input type="tel" id="telefone" name="telefone" placeholder="{{ dados.contato.placeholder_telefone }}" required>
             </div>
             <div class="form-group">
-                <textarea id="mensagem" name="mensagem" placeholder="Sua Mensagem" rows="5" required></textarea>
+                <textarea id="mensagem" name="mensagem" placeholder="{{ dados.contato.placeholder_mensagem }}" rows="5" required></textarea>
             </div>
-            <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+            <button type="submit" class="btn-enviar">{{ dados.contato.btn_texto }}</button>
         </form>
     </section>
 
@@ -155,7 +155,7 @@
                 <a href="#home"><img src="/static/img/slogan.png" alt="Slogan Footer"></a>
             </div>
             <div class="footer-links">
-                <h4>Links Rápidos</h4>
+                <h4>{{ dados.footer.links_titulo }}</h4>
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#sobre">Sobre Nós</a></li>
@@ -163,15 +163,15 @@
                 </ul>
             </div>
             <div class="footer-horarios">
-                <h4>Horários</h4>
+                <h4>{{ dados.footer.horarios_titulo }}</h4>
                 <ul>
-                    <li>Segunda a Sexta: 09:00 - 18:00</li>
-                    <li>Sábado e Domingo: Fechado</li>
+                    <li>{{ dados.footer.horario_semana }}</li>
+                    <li>{{ dados.footer.horario_fim }}</li>
                 </ul>
             </div>
             <div class="footer-endereco">
                 <span class="material-symbols-outlined">location_on</span>
-                {% if dados and dados.contato_endereco %}{{ dados.contato_endereco }}{% else %}Av. Brasil, 1975 - Loja 1991 - Centro, Juiz de Fora -MG, 36060-010{% endif %}
+                {{ dados.footer.endereco }}
             </div>
         </div>
     </footer>
@@ -181,10 +181,9 @@
             event.preventDefault();
             const nome = document.getElementById('nome').value;
             const mensagem = document.getElementById('mensagem').value;
-            
-            // Puxa o telefone dinâmico ou usa o seu padrão
-            const telBanco = "{{ dados.contato_telefone if dados else '5532988134080' }}";
-            const telDestino = telBanco.replace(/\D/g, ''); 
+
+            const telBanco = "{{ dados.contato.whatsapp_numero }}";
+            const telDestino = telBanco.replace(/\D/g, '');
 
             const texto = `Olá! Me chamo ${nome}. ${mensagem}`
             const msgFormatada = encodeURIComponent(texto);

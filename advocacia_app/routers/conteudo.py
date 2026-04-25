@@ -22,7 +22,7 @@ from fastapi import APIRouter, Depends
 
 from advocacia_app.core.auth_db import User
 from advocacia_app.core.auth_users import current_active_user
-from advocacia_app.core.content_db import get_content_db, fetchall, execute
+from advocacia_app.core.content_db import get_content_db, fetchall, execute, montar_conteudo, atomic
 from advocacia_app.core.content_store import CONTEUDO_PADRAO
 from advocacia_app.schemas.conteudo import (
     ContatoUpdate,
@@ -35,15 +35,7 @@ from advocacia_app.schemas.conteudo import (
 router = APIRouter(prefix="/api/conteudo", tags=["Conteúdo API"])
 
 
-# ─── Helper ───────────────────────────────────────────────────────────────────
-def _montar_conteudo(db: sqlite3.Connection) -> dict:
-    linhas = fetchall(db, "SELECT secao, chave, valor FROM conteudo")
-    data: dict = {}
-    for row in linhas:
-        data.setdefault(row["secao"], {})[row["chave"]] = row["valor"]
-    cards = fetchall(db, "SELECT icone, titulo, descricao FROM cards ORDER BY ordem")
-    data.setdefault("especialidades", {})["cards"] = cards
-    return data
+_CARD_FIELDS = ("icone", "titulo", "descricao")
 
 
 def _upsert(
@@ -77,12 +69,12 @@ def get_conteudo(
     _: User = Depends(current_active_user),
     db: sqlite3.Connection = Depends(get_content_db),
 ) -> dict:
-    return _montar_conteudo(db)
+    return montar_conteudo(db)
 
 
 @router.get("/publico", summary="Todo o conteúdo (sem autenticação)")
 def get_conteudo_publico(db: sqlite3.Connection = Depends(get_content_db)) -> dict:
-    return _montar_conteudo(db)
+    return montar_conteudo(db)
 
 
 # ─── Edição ───────────────────────────────────────────────────────────────────
@@ -94,7 +86,7 @@ def update_hero(
     db: sqlite3.Connection = Depends(get_content_db),
 ) -> dict:
     _upsert(db, "hero", payload.model_dump(exclude_none=True), str(user.email), "UPDATE_HERO")
-    return {"ok": True, "hero": _montar_conteudo(db).get("hero")}
+    return {"ok": True, "hero": montar_conteudo(db).get("hero")}
 
 
 @router.put("/especialidades", summary="Atualiza especialidades e cards")
@@ -112,16 +104,19 @@ def update_especialidades(
     if "cards" in updates:
         agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         for i, card_upd in enumerate(updates["cards"]):
-            partes, vals = [], []
-            for campo in ("icone", "titulo", "descricao"):
+            set_clauses = []
+            params = []
+            for campo in _CARD_FIELDS:
                 if card_upd.get(campo) is not None:
-                    partes.append(f"{campo} = ?")
-                    vals.append(card_upd[campo])
-            if partes:
+                    set_clauses.append(f"{campo} = ?")
+                    params.append(card_upd[campo])
+            if set_clauses:
+                set_clauses.append("atualizado_em = ?")
+                params.extend([agora, i])
                 execute(
                     db,
-                    f"UPDATE cards SET {', '.join(partes)}, atualizado_em = ? WHERE ordem = ?",
-                    (*vals, agora, i),
+                    f"UPDATE cards SET {', '.join(set_clauses)} WHERE ordem = ?",
+                    tuple(params),
                 )
         execute(
             db,
@@ -129,7 +124,7 @@ def update_especialidades(
             (str(user.email), "UPDATE_CARDS", json.dumps(updates["cards"], ensure_ascii=False)),
         )
 
-    return {"ok": True, "especialidades": _montar_conteudo(db).get("especialidades")}
+    return {"ok": True, "especialidades": montar_conteudo(db).get("especialidades")}
 
 
 @router.put("/perfil", summary="Atualiza a seção de perfil")
@@ -139,7 +134,7 @@ def update_perfil(
     db: sqlite3.Connection = Depends(get_content_db),
 ) -> dict:
     _upsert(db, "perfil", payload.model_dump(exclude_none=True), str(user.email), "UPDATE_PERFIL")
-    return {"ok": True, "perfil": _montar_conteudo(db).get("perfil")}
+    return {"ok": True, "perfil": montar_conteudo(db).get("perfil")}
 
 
 @router.put("/contato", summary="Atualiza a seção de contato")
@@ -149,7 +144,7 @@ def update_contato(
     db: sqlite3.Connection = Depends(get_content_db),
 ) -> dict:
     _upsert(db, "contato", payload.model_dump(exclude_none=True), str(user.email), "UPDATE_CONTATO")
-    return {"ok": True, "contato": _montar_conteudo(db).get("contato")}
+    return {"ok": True, "contato": montar_conteudo(db).get("contato")}
 
 
 @router.put("/footer", summary="Atualiza o rodapé")
@@ -159,7 +154,7 @@ def update_footer(
     db: sqlite3.Connection = Depends(get_content_db),
 ) -> dict:
     _upsert(db, "footer", payload.model_dump(exclude_none=True), str(user.email), "UPDATE_FOOTER")
-    return {"ok": True, "footer": _montar_conteudo(db).get("footer")}
+    return {"ok": True, "footer": montar_conteudo(db).get("footer")}
 
 
 # ─── Reset ────────────────────────────────────────────────────────────────────
@@ -169,32 +164,32 @@ def reset_conteudo(
     user: User = Depends(current_active_user),
     db: sqlite3.Connection = Depends(get_content_db),
 ) -> dict:
-    execute(db, "DELETE FROM conteudo")
-    execute(db, "DELETE FROM cards")
+    with atomic(db):
+        db.execute("DELETE FROM conteudo")
+        db.execute("DELETE FROM cards")
 
-    agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    linhas = []
-    for secao, campos in CONTEUDO_PADRAO.items():
-        if secao == "especialidades":
+        agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        linhas = []
+        for secao, campos in CONTEUDO_PADRAO.items():
+            if secao == "especialidades":
+                for chave, valor in campos.items():
+                    if chave != "cards":
+                        linhas.append((secao, chave, str(valor), agora))
+                continue
             for chave, valor in campos.items():
-                if chave != "cards":
-                    linhas.append((secao, chave, str(valor), agora))
-            continue
-        for chave, valor in campos.items():
-            linhas.append((secao, chave, str(valor), agora))
+                linhas.append((secao, chave, str(valor), agora))
 
-    db.executemany(
-        "INSERT INTO conteudo (secao, chave, valor, atualizado_em) VALUES (?, ?, ?, ?)",
-        linhas,
-    )
-    db.executemany(
-        "INSERT INTO cards (ordem, icone, titulo, descricao, atualizado_em) VALUES (?, ?, ?, ?, ?)",
-        [
-            (i, c["icone"], c["titulo"], c["descricao"], agora)
-            for i, c in enumerate(CONTEUDO_PADRAO["especialidades"]["cards"])
-        ],
-    )
-    db.commit()
+        db.executemany(
+            "INSERT INTO conteudo (secao, chave, valor, atualizado_em) VALUES (?, ?, ?, ?)",
+            linhas,
+        )
+        db.executemany(
+            "INSERT INTO cards (ordem, icone, titulo, descricao, atualizado_em) VALUES (?, ?, ?, ?, ?)",
+            [
+                (i, c["icone"], c["titulo"], c["descricao"], agora)
+                for i, c in enumerate(CONTEUDO_PADRAO["especialidades"]["cards"])
+            ],
+        )
 
     execute(
         db,

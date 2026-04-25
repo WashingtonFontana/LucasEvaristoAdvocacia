@@ -14,6 +14,8 @@ Toda lógica de negócio, autenticação e persistência vive nos
 submódulos correspondentes (core/, routers/, schemas/).
 """
 
+import logging
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -26,7 +28,9 @@ from advocacia_app.core.config import STATIC_DIR
 from advocacia_app.core.content_db import init_content_db
 from advocacia_app.routers import admin, audit, conteudo, health, imagens, site
 from advocacia_app.schemas.users import UserRead, UserUpdate
-from fastapi.responses import FileResponse
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 # ─── Lifespan — inicializa ambos os bancos antes de aceitar requisições ───────
@@ -86,12 +90,4 @@ app.include_router(audit.router)
 
 # ─── Arquivos estáticos — SEMPRE POR ÚLTIMO ───────────────────────────────────
 STATIC_DIR.mkdir(parents=True, exist_ok=True)
-@app.get("/")
-@app.get("/index.html")
-async def serve_index():
-    index_path = STATIC_DIR / "index.html"
-    if not index_path.exists():
-        print(f"ERRO CRÍTICO: Arquivo não encontrado em {index_path.absolute()}")
-        return {"detail": "Arquivo index.html não encontrado no servidor"}
-    return FileResponse(index_path)
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")

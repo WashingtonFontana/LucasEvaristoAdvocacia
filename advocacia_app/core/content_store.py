@@ -9,7 +9,16 @@ usada em dois lugares:
   • routers/conteudo.py → endpoint POST /api/conteudo/reset
 """
 
-CONTEUDO_PADRAO: dict = {
+from typing import TypedDict
+
+
+class CardPadrao(TypedDict):
+    icone: str
+    titulo: str
+    descricao: str
+
+
+CONTEUDO_PADRAO: dict[str, dict[str, str | list[CardPadrao]]] = {
     "hero": {
         "welcome_text":  "SEJA BEM-VINDO!",
         "titulo_linha1": "Lucas Evaristo -",

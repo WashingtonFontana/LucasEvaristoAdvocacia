@@ -7,34 +7,38 @@ Rotas HTML do painel administrativo — protegidas pelo fastapi-users.
   POST /admin/update   → salva textos + foto de perfil via multipart form
 """
 
-import os
+import re
+import unicodedata
+
 import sqlite3
 
 from fastapi import APIRouter, Depends, File, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 from starlette import status
 
 from advocacia_app.core.auth_db import User
 from advocacia_app.core.auth_users import current_active_user
-from advocacia_app.core.config import IMG_DIR, ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB
-from advocacia_app.core.content_db import get_content_db, fetchall, execute
+from advocacia_app.core.config import IMG_DIR, ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB, TEMPLATES_DIR
+from advocacia_app.core.content_db import get_content_db, montar_conteudo, execute
 
 router = APIRouter(tags=["Painel Admin"])
 
-import os as _os
-_TMPL_DIR = _os.path.join(_os.path.dirname(__file__), "..", "..", "templates")
-templates = Jinja2Templates(directory=_os.path.realpath(_TMPL_DIR))
+_env = Environment(
+    loader=FileSystemLoader(str(TEMPLATES_DIR)),
+    autoescape=select_autoescape(["html", "xml"]),
+)
+templates = Jinja2Templates(env=_env)
+
+_ALLOWED_EXTS: set[str] = {"jpg", "jpeg", "png", "webp", "gif"}
 
 
-def _montar_conteudo(db: sqlite3.Connection) -> dict:
-    linhas = fetchall(db, "SELECT secao, chave, valor FROM conteudo")
-    data: dict = {}
-    for row in linhas:
-        data.setdefault(row["secao"], {})[row["chave"]] = row["valor"]
-    cards = fetchall(db, "SELECT icone, titulo, descricao FROM cards ORDER BY ordem")
-    data.setdefault("especialidades", {})["cards"] = cards
-    return data
+def _sanitize_filename(name: str) -> str:
+    """Normaliza e sanitiza um nome de arquivo, removendo caracteres perigosos."""
+    name = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii")
+    name = re.sub(r"[^a-zA-Z0-9._-]", "", name.strip())
+    return name
 
 
 @router.get("/admin", response_class=HTMLResponse, summary="Painel de administração")
@@ -44,7 +48,7 @@ async def admin_panel(
     db: sqlite3.Connection = Depends(get_content_db),
 ) -> HTMLResponse:
     """Exibe o formulário com todos os dados atuais do banco para edição."""
-    dados = _montar_conteudo(db)
+    dados = montar_conteudo(db)
     return templates.TemplateResponse(
         request=request,
         name="admin.html",
@@ -55,7 +59,6 @@ async def admin_panel(
 @router.post("/admin/update", summary="Salva alterações do formulário do painel")
 async def update_site(
     request:          Request,
-    # ── Campos do formulário ──────────────────────────────────────────────────
     hero_welcome:     str = Form(None),
     hero_titulo1:     str = Form(None),
     hero_titulo2:     str = Form(None),
@@ -68,7 +71,6 @@ async def update_site(
     footer_fimde:     str = Form(None),
     footer_endereco:  str = Form(None),
     nova_foto:        UploadFile = File(None),
-    # ── Dependências ─────────────────────────────────────────────────────────
     user: User = Depends(current_active_user),
     db:   sqlite3.Connection = Depends(get_content_db),
 ) -> RedirectResponse:
@@ -102,14 +104,14 @@ async def update_site(
                 (secao, chave, valor),
             )
 
-    # Foto de perfil
     if nova_foto and nova_foto.filename:
         if nova_foto.content_type in ALLOWED_IMAGE_TYPES:
             conteudo_foto = await nova_foto.read()
             if len(conteudo_foto) <= MAX_IMAGE_SIZE_MB * 1024 * 1024:
                 ext = nova_foto.filename.rsplit(".", 1)[-1].lower()
+                if ext not in _ALLOWED_EXTS:
+                    ext = "jpg"
                 destino = IMG_DIR / f"perfil_lucas.{ext}"
-                # Remove versão anterior com extensão diferente
                 for old in IMG_DIR.glob("perfil_lucas.*"):
                     old.unlink()
                 destino.write_bytes(conteudo_foto)
@@ -131,7 +133,6 @@ async def update_site(
                     ),
                 )
 
-    # Audit log
     execute(
         db,
         "INSERT INTO audit_log (usuario, acao, detalhe) VALUES (?, ?, ?)",
