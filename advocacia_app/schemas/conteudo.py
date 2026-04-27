@@ -53,11 +53,13 @@ class ContatoUpdate(BaseModel):
 
 
 class FooterUpdate(BaseModel):
-    links_titulo:    Optional[str] = None
-    horarios_titulo: Optional[str] = None
-    horario_semana:  Optional[str] = None
-    horario_fim:     Optional[str] = None
-    endereco:        Optional[str] = None
+    links_titulo:         Optional[str] = None
+    horarios_titulo:      Optional[str] = None
+    horario_semana:        Optional[str] = None
+    horario_fim:           Optional[str] = None
+    endereco:              Optional[str] = None
+    conecte_se_titulo:     Optional[str] = None
+    conecte_se_instagram:   Optional[str] = None
 
 
 class SobreNosUpdate(BaseModel):

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=location_on" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -44,6 +45,7 @@
                 <p class="hero-subtitle">
                     {{ dados.sobre_nos.hero_subtitulo }}
                 </p>
+                <a href="#contato" class="btn-hero">{{ dados.hero.btn_texto }}</a>
             </div>
         </div>
     </section>
@@ -145,6 +147,11 @@
                     <li>{{ dados.footer.horario_semana }}</li>
                     <li>{{ dados.footer.horario_fim }}</li>
                 </ul>
+            </div>
+            <div class="footer-redes">
+                <h4>{{ dados.footer.conecte_se_titulo }}</h4>
+                <a href="{{ dados.footer.conecte_se_instagram }}" target="_blank" rel="noopener noreferrer"><i
+                        class="fa-brands fa-instagram"></i></a>
             </div>
             <div class="footer-endereco">
                 <span class="material-symbols-outlined">location_on</span>

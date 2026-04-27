@@ -114,10 +114,12 @@ CONTEUDO_PADRAO: dict[str, dict[str, str | list[CardPadrao]]] = {
                                    " jurídicas eficazes e humanizadas.",
     },
     "footer": {
-        "links_titulo":    "Links Rápidos",
-        "horarios_titulo": "Horários",
-        "horario_semana":  "Segunda a Sexta: 09:00 - 18:00",
-        "horario_fim":     "Sábado e Domingo: Fechado",
-        "endereco":        "Av. Brasil, 1975 - Loja 1991 - Centro, Juiz de Fora - MG, 36060-010",
+        "links_titulo":        "Links Rápidos",
+        "horarios_titulo":     "Horários",
+        "horario_semana":      "Segunda a Sexta: 09:00 - 18:00",
+        "horario_fim":         "Sábado e Domingo: Fechado",
+        "endereco":            "Av. Brasil, 1975 - Loja 1991 - Centro, Juiz de Fora - MG, 36060-010",
+        "conecte_se_titulo":   "CONECTE-SE",
+        "conecte_se_instagram": "https://www.instagram.com/advlucasevaristo",
     },
 }

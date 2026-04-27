@@ -70,6 +70,8 @@ async def update_site(
     footer_semana:    str = Form(None),
     footer_fimde:     str = Form(None),
     footer_endereco:  str = Form(None),
+    footer_conecte_titulo:    str = Form(None),
+    footer_conecte_instagram: str = Form(None),
     nova_foto:        UploadFile = File(None),
     user: User = Depends(current_active_user),
     db:   sqlite3.Connection = Depends(get_content_db),
@@ -90,6 +92,8 @@ async def update_site(
         ("footer", "horario_semana"): footer_semana,
         ("footer", "horario_fim"):    footer_fimde,
         ("footer", "endereco"):       footer_endereco,
+        ("footer", "conecte_se_titulo"):    footer_conecte_titulo,
+        ("footer", "conecte_se_instagram"):  footer_conecte_instagram,
     }
 
     for (secao, chave), valor in atualizacoes.items():

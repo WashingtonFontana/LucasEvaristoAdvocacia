@@ -78,12 +78,29 @@ CREATE TABLE IF NOT EXISTS audit_log (
 
 # ─── Seed ─────────────────────────────────────────────────────────────────────
 def _seed(conn: sqlite3.Connection) -> None:
-    """Popula dados iniciais se as tabelas estiverem vazias. Idempotente."""
+    """Popula dados iniciais se as tabelas estiverem vazias. Idempotente.
+
+    Também garante que chaves adicionadas ao CONTEUDO_PADRAO após o seed
+    inicial sejam inseridas em bancos já existentes (INSERT OR IGNORE).
+    """
     cur = conn.cursor()
 
-    # Conteúdo textual
     cur.execute("SELECT COUNT(*) FROM conteudo")
     if cur.fetchone()[0] == 0:
+        linhas = []
+        for secao, campos in CONTEUDO_PADRAO.items():
+            if secao == "especialidades":
+                for chave, valor in campos.items():
+                    if chave != "cards":
+                        linhas.append((secao, chave, str(valor)))
+                continue
+            for chave, valor in campos.items():
+                linhas.append((secao, chave, str(valor)))
+        cur.executemany(
+            "INSERT OR IGNORE INTO conteudo (secao, chave, valor) VALUES (?, ?, ?)",
+            linhas,
+        )
+    else:
         linhas = []
         for secao, campos in CONTEUDO_PADRAO.items():
             if secao == "especialidades":

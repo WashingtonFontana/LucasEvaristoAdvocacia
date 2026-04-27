@@ -907,6 +907,14 @@ body{
               <label>Horário Fim de Semana</label>
               <input type="text" id="footer-horario_fim">
             </div>
+            <div class="form-group">
+              <label>Título — Conecte-se</label>
+              <input type="text" id="footer-conecte_se_titulo">
+            </div>
+            <div class="form-group">
+              <label>Instagram (URL)</label>
+              <input type="text" id="footer-conecte_se_instagram">
+            </div>
           </div>
           <div class="form-grid single" style="margin-top:14px;">
             <div class="form-group">
@@ -1137,7 +1145,7 @@ async function salvarContato() {
 
 async function salvarFooter() {
   const body = {};
-  ['links_titulo','horarios_titulo','horario_semana','horario_fim','endereco'].forEach(k => {
+  ['links_titulo','horarios_titulo','horario_semana','horario_fim','endereco','conecte_se_titulo','conecte_se_instagram'].forEach(k => {
     body[k] = document.getElementById('footer-' + k).value;
   });
   await salvarSecao('/api/conteudo/footer', body);
