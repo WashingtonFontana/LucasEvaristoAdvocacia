@@ -751,10 +751,6 @@ footer {
         gap: 8px;
     }
 
-    .sobre-timeline-conteudo .sobre-paragrafo {
-        font-size: 0.9rem;
-    }
-
     .sobre-titulo-principal {
         font-size: 26px;
     }
@@ -767,8 +763,8 @@ footer {
         font-size: 15px;
     }
 
-    .sobre-paragrafo {
-        font-size: 14px;
+    .sobre-paragrafo, .sobre-paragrafo-timeline {
+        font-size: 15px;
     }
 
     .sobre-quem-section {
@@ -783,3 +779,4 @@ footer {
         height: 50vh;
     }
 }
+

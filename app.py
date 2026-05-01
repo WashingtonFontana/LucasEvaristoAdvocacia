@@ -24,7 +24,7 @@ from fastapi.staticfiles import StaticFiles
 
 from advocacia_app.core.auth_db import Base, engine
 from advocacia_app.core.auth_users import auth_backend, fastapi_users
-from advocacia_app.core.config import STATIC_DIR
+from advocacia_app.core.config import CORS_ORIGINS, IMG_DIR, STATIC_DIR
 from advocacia_app.core.content_db import init_content_db
 from advocacia_app.routers import admin, audit, conteudo, health, imagens, site
 from advocacia_app.schemas.users import UserRead, UserUpdate
@@ -60,7 +60,7 @@ app = FastAPI(
 # ─── CORS ─────────────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # restrinja ao domínio real em produção
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -89,5 +89,9 @@ app.include_router(imagens.router)
 app.include_router(audit.router)
 
 # ─── Arquivos estáticos — SEMPRE POR ÚLTIMO ───────────────────────────────────
+# IMG_DIR pode apontar para um volume persistente (Railway), enquanto
+# STATIC_DIR aponta para o repositório (CSS). Mount mais específico primeiro.
 STATIC_DIR.mkdir(parents=True, exist_ok=True)
+IMG_DIR.mkdir(parents=True, exist_ok=True)
+app.mount("/static/img", StaticFiles(directory=str(IMG_DIR)), name="img")
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")

@@ -24,7 +24,7 @@ from fastapi_users.authentication import (
 )
 
 from .auth_db import User, get_user_db
-from .config import JWT_SECRET
+from .config import COOKIE_SECURE, JWT_SECRET
 
 
 # ─── UserManager ──────────────────────────────────────────────────────────────
@@ -43,7 +43,7 @@ async def get_user_manager(
 cookie_transport = CookieTransport(
     cookie_name="advocacia_auth",
     cookie_max_age=3600,
-    cookie_secure=False,    # True em produção (HTTPS)
+    cookie_secure=COOKIE_SECURE,
     cookie_httponly=True,
     cookie_samesite="lax",
 )

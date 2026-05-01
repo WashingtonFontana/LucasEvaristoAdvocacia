@@ -1,18 +1,20 @@
 [project]
 name = "advocacia-app"
 version = "0.1.0"
-description = ""
+description = "Portal institucional e painel administrativo do escritório Lucas Evaristo Advocacia e Consultoria. Desenvolvido com FastAPI, Jinja2 e SQLite3, oferece site público com áreas de atuação, formulário de contato via WhatsApp e CMS protegido por autenticação JWT para gerenciamento de conteúdo e imagens. Projeto acadêmico alinhado ao ODS 16 da ONU — Paz, Justiça e Instituições Eficazes."
 authors = [
-    {name = "Your Name",email = "you@example.com"}
+    {name = "Washington Fontana Netto",email = "washingtonfontana00@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.13,<4.0"
 dependencies = [
     "fastapi[standard] (>=0.135.2,<0.136.0)",
-    "jinja2 (>=3.1.6,<4.0.0)",
+    "uvicorn[standard] (>=0.29.0)",
     "python-multipart (>=0.0.22,<0.0.23)",
+    "jinja2 (>=3.1.6,<4.0.0)",
     "fastapi-users[sqlalchemy] (>=15.0.4,<16.0.0)",
-    "aiosqlite (>=0.22.1,<0.23.0)"
+    "aiosqlite (>=0.22.1,<0.23.0)",
+    "python-dotenv (>=1.0.1)"
 ]
 
 
