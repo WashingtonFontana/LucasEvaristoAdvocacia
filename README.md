@@ -1,8 +1,6 @@
 # ⚖️ Lucas Evaristo - Advocacia e Consultoria
 
-Este é um site institucional funcional desenvolvido para o meu
-projeto acadêmico, com foco em apresentar o trabalho jurídico do
-escritório de advocacia parceiro.
+Este é um site institucional funcional desenvolvido como meu projeto acadêmico em parceria com o escritório Lucas Evaristo - Advocacia e Consultoria (Juiz de Fora/MG). Apresenta as áreas de atuação jurídica do escritório, canal de contato via WhatsApp e painel administrativo para gestão de conteúdo — promovendo acesso à informação jurídica para a comunidade local.
 
 ---
 
