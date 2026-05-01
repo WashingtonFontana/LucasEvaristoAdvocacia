@@ -5,49 +5,55 @@
   <title>Login — Lucas Evaristo</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
 
-  <form id="login-form" method="POST" action="/auth/login"
-        enctype="application/x-www-form-urlencoded">
 
-    <h2>Acesso ao Painel</h2>
+<body class="login-page">
+  <main id="auth-overlay">
+    <form id="login-form" class="auth-box" method="POST" action="/auth/login">
+      <h1>Lucas Evaristo</h1>
+      <div class="auth-gold-line"></div>
+      <p>PAINEL ADMINISTRATIVO</p>
 
-    <div>
-      <label for="username">E-mail</label>
-      <input type="email" id="username" name="username"
-             placeholder="contato@lucasevaristo.com.br" required>
-    </div>
+      <div class="form-group">
+        <label for="username">USUÁRIO</label>
+        <input type="email" id="username" name="username"
+               placeholder="E-mail" autocomplete="username" required>
+      </div>
 
-    <div>
-      <label for="password">Senha</label>
-      <input type="password" id="password" name="password"
-             placeholder="••••••••" required>
-    </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password"
+               placeholder="••••••••" autocomplete="current-password" required>
+      </div>
 
-    <button type="submit">Entrar</button>
-
-  </form>
+      <button class="btn btn-gold" type="submit">Entrar no Painel</button>
+      <p id="auth-error">E-mail ou senha inválidos.</p>
+    </form>
+  </main>
 
   <script>
-    const form = document.getElementById("login-form");
+  const form = document.getElementById("login-form");
+  const error = document.getElementById("auth-error");
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    error.style.display = "none";
 
-      const response = await fetch(form.action, {
-        method: "POST",
-        body: new FormData(form),
-        credentials: "same-origin",
-      });
-
-      if (response.ok) {
-        window.location.href = "/admin";
-        return;
-      }
-
-      alert("E-mail ou senha inválidos.");
+    const response = await fetch(form.action, {
+      method: "POST",
+      body: new URLSearchParams(new FormData(form)),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      credentials: "include"
     });
-  </script>
 
+    if (response.ok) {
+      window.location.href = "/admin";
+      return;
+    }
+    error.style.display = "block";
+  });
+</script>
 </body>
 </html>
