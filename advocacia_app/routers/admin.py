@@ -19,7 +19,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from starlette import status
 
 from advocacia_app.core.auth_db import User
-from advocacia_app.core.auth_users import current_active_user
+from advocacia_app.core.auth_users import current_active_user, current_active_user_optional
 from advocacia_app.core.config import IMG_DIR, ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB, TEMPLATES_DIR
 from advocacia_app.core.content_db import get_content_db, montar_conteudo, execute
 
@@ -44,10 +44,13 @@ def _sanitize_filename(name: str) -> str:
 @router.get("/admin", response_class=HTMLResponse, summary="Painel de administração")
 async def admin_panel(
     request: Request,
-    user: User = Depends(current_active_user),
+    user: User | None = Depends(current_active_user_optional),
     db: sqlite3.Connection = Depends(get_content_db),
 ) -> HTMLResponse:
     """Exibe o formulário com todos os dados atuais do banco para edição."""
+    if user is None:
+        return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
+
     dados = montar_conteudo(db)
     return templates.TemplateResponse(
         request=request,

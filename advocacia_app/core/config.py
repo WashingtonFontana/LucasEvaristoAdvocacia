@@ -58,8 +58,18 @@ if JWT_SECRET == "CHAVE_ULTRA_SECRETA_DO_LUCAS_EVARISTO_2026":
 # ─── Porta (Railway injeta PORT dinamicamente) ────────────────────────────────
 PORT: int = int(os.getenv("PORT", "8000"))
 
+def _env_bool(name: str, default: bool = False) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.lower() in ("true", "1", "yes")
+
+
 # ─── Cookie Secure (deve ser True em produção HTTPS) ──────────────────────────
-COOKIE_SECURE: bool = os.getenv("COOKIE_SECURE", "false").lower() in ("true", "1", "yes")
+_running_on_railway = bool(
+    os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RAILWAY_PUBLIC_DOMAIN")
+)
+COOKIE_SECURE: bool = _env_bool("COOKIE_SECURE", default=_running_on_railway)
 
 # ─── CORS ─────────────────────────────────────────────────────────────────────
 _cors_raw: str = os.getenv("CORS_ORIGINS", "*")
