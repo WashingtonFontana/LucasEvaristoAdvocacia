@@ -407,14 +407,17 @@ footer {
 }
 
 .footer-redes a {
-    color: #E1306C; /* Cor oficial do Instagram */
-    font-size: 30px; /* Tamanho do ícone */
+    color: #E1306C;
+    /* Cor oficial do Instagram */
+    font-size: 30px;
+    /* Tamanho do ícone */
     transition: transform 0.3s ease;
     display: inline-block;
 }
 
 .footer-redes a:hover {
-    transform: scale(1.2); /* Efeito de aumento ao passar o mouse */
+    transform: scale(1.2);
+    /* Efeito de aumento ao passar o mouse */
     color: #bc2a8d;
 }
 
@@ -618,21 +621,21 @@ footer {
    ============================================================ */
 
 :root {
-  --navy:    #061d4f;
-  --navy2:   #0a2560;
-  --gold:    #c5a059;
-  --gold2:   #d4b06a;
-  --blue:    #4a90e2;
-  --dark:    #0c0f0d;
-  --mid:     #1a1f1d;
-  --panel:   #111614;
-  --surface: #181e1b;
-  --border:  rgba(197,160,89,.18);
-  --text:    #e8e3d8;
-  --muted:   #8a8a7a;
-  --danger:  #c0392b;
-  --success: #27ae60;
-  --radius:  6px;
+    --navy: #061d4f;
+    --navy2: #0a2560;
+    --gold: #c5a059;
+    --gold2: #d4b06a;
+    --blue: #4a90e2;
+    --dark: #0c0f0d;
+    --mid: #1a1f1d;
+    --panel: #111614;
+    --surface: #181e1b;
+    --border: rgba(197, 160, 89, .18);
+    --text: #e8e3d8;
+    --muted: #8a8a7a;
+    --danger: #c0392b;
+    --success: #27ae60;
+    --radius: 6px;
 }
 
 .login-page {
@@ -646,7 +649,7 @@ footer {
 #auth-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(6,10,8,.97);
+    background: rgba(6, 10, 8, .97);
     z-index: 9000;
     display: flex;
     align-items: center;
@@ -662,7 +665,7 @@ footer {
     width: 380px;
     max-width: 100%;
     text-align: center;
-    box-shadow: 0 24px 80px rgba(0,0,0,.38);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .38);
 }
 
 .auth-box h1 {
@@ -704,7 +707,7 @@ footer {
 .auth-box .form-group input {
     width: 100%;
     background: var(--panel);
-    border: 1px solid rgba(197,160,89,.2);
+    border: 1px solid rgba(197, 160, 89, .2);
     border-radius: var(--radius);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
@@ -714,13 +717,13 @@ footer {
 }
 
 .auth-box .form-group input::placeholder {
-    color: rgba(232,227,216,.42);
+    color: rgba(232, 227, 216, .42);
 }
 
 .auth-box .form-group input:focus {
     outline: none;
     border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(197,160,89,.08);
+    box-shadow: 0 0 0 3px rgba(197, 160, 89, .08);
 }
 
 .btn {
@@ -917,7 +920,8 @@ footer {
         font-size: 15px;
     }
 
-    .sobre-paragrafo, .sobre-paragrafo-timeline {
+    .sobre-paragrafo,
+    .sobre-paragrafo-timeline {
         font-size: 15px;
     }
 
@@ -934,85 +938,88 @@ footer {
     }
 
     .login-page {
-    min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
-  #auth-overlay {
-    position: fixed;
-    inset: 0;
-    padding: 16px;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 10vh;
-    overflow-y: auto;
-  }
+    #auth-overlay {
+        position: fixed;
+        inset: 0;
+        padding: 12px;
+        padding-top: 25vh;
+        padding-bottom: 25vh;
+        align-items: flex-start;
+        justify-content: center;
+        overflow-y: auto;
+    }
 
-  .auth-box {
-    width: 100%;
-    max-width: 380px;
-    padding: 32px 24px;
-  }
+    .auth-box {
+        width: 100%;
+        max-width: 380px;
+        padding: 32px 24px;
+    }
 
-  .auth-box h1 {
-    font-size: 22px;
-  }
+    .auth-box h1 {
+        font-size: 26px;
+    }
 
-  .auth-box p {
-    font-size: 11px;
-    margin-bottom: 20px;
-  }
+    .auth-box p {
+        font-size: 11px;
+        margin-bottom: 28px;
+    }
 
-  .auth-gold-line {
-    width: 100px;
-    margin-bottom: 1.2rem;
-  }
+    .auth-gold-line {
+        width: 150px;
+        margin-bottom: 1.2rem;
+    }
 
-  .auth-box .form-group {
-    margin-bottom: 18px;
-  }
+    .auth-box .form-group {
+        margin-bottom: 20px;
+    }
 
-  .auth-box .form-group label {
-    font-size: 11px;
-  }
+    .auth-box .form-group label {
+        font-size: 11px;
+        margin-bottom: 8px;
+    }
 
-  .auth-box .form-group input {
-    font-size: 16px;
-    padding: 14px;
-  }
+    .auth-box .form-group input {
+        width: 100%;
+        font-size: 16px;
+        padding: 16px;
+    }
 
-  .auth-box .btn-gold {
-    padding: 14px;
-    font-size: 14px;
-    margin-top: 10px;
-  }
+    .auth-box .btn-gold {
+        padding: 14px;
+        font-size: 16px;
+        margin-top: 12px;
+    }
 
-  #auth-error {
-    font-size: 12px;
-    margin-top: 12px;
-  }
+    #auth-error {
+        font-size: 12px;
+        margin-top: 12px;
+    }
 }
 
 @media (max-width: 420px) {
-  #auth-overlay {
-    padding: 14px;
-    padding-top: 8vh;
-  }
+    #auth-overlay {
+        padding: 14px;
+        padding-top: 8vh;
+    }
 
-  .auth-box {
-    padding: 30px 22px;
-  }
+    .auth-box {
+        padding: 30px 22px;
+    }
 
-  .auth-box h1 {
-    font-size: 21px;
-  }
+    .auth-box h1 {
+        font-size: 21px;
+    }
 
-  .auth-box p {
-    margin-bottom: 18px;
-  }
+    .auth-box p {
+        margin-bottom: 18px;
+    }
 
-  .auth-gold-line {
-    width: 90px;
-  }
+    .auth-gold-line {
+        width: 90px;
+    }
 }
